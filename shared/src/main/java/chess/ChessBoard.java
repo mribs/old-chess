@@ -16,9 +16,8 @@ public class ChessBoard {
 
 
     public ChessBoard() {
-        //board constructor should set up the board
+        //board constructor should not set up the board
         this.board = new ChessPiece[8][8];
-//        resetBoard();
     }
 
     /**
@@ -29,13 +28,11 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board[position.getRow() - 1][position.getColumn() - 1]=piece;
-////    System.out.println("added " + piece.getPieceType() + " at " + position.getRow() + ", " + position.getColumn());
         if (piece.getPieceType() == ChessPiece.PieceType.KING) {
             switch (piece.getTeamColor()) {
                 case WHITE -> setWhiteKingPos(position);
                 case BLACK -> setBlackKingPos(position);
             }
-////      System.out.println("king is at " + position.toString());
         }
     }
 
@@ -84,9 +81,7 @@ public class ChessBoard {
         addPiece(new ChessPosition(8,4), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN));
         //Add Kings
         addPiece(new ChessPosition(1, 5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING));
-//        whiteKingPos = new C(1, 5);
         addPiece(new ChessPosition(8, 5), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING));
-//        blackKingPos = new Position(8,5);
     }
 
     private void clearBoard() {

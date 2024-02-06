@@ -223,7 +223,7 @@ public class ChessGame {
                 ChessPosition position = new ChessPosition(r, c);
                 if (gameBoard.getPiece(position) != null && gameBoard.getPiece(position).getTeamColor() == teamColor) {
                     //TODO FIX THIS
-                    if (validMoves(position) != null || !(validMoves(position).isEmpty())) {
+                    if (!(validMoves(position).isEmpty())) {
                         return false;
                     }
                 }

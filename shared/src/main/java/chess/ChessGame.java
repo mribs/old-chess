@@ -50,13 +50,12 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        Collection<ChessMove> validMoves = new HashSet<ChessMove>();
         Collection<ChessMove> trueValidMoves = new HashSet<>();
         //get piece at location
         ChessPiece piece =getBoard().getPiece(startPosition);
 
         //get that piece's moves
-        validMoves = piece.pieceMoves(gameBoard, startPosition);
+        Collection<ChessMove> validMoves = piece.pieceMoves(gameBoard, startPosition);
         if (validMoves == null) return null;
         //check if any are legal (don't leave king in danger)
         for (ChessMove move : validMoves) {
@@ -134,12 +133,10 @@ public class ChessGame {
                     ChessPiece.PieceType type = move.getPromotionPiece();
                     TeamColor pieceColor = piece.getTeamColor();
                     switch(type) {
-//                        case PAWN -> piece = new Pawn(pieceColor);
                         case ROOK -> piece = new ChessPiece(pieceColor, ChessPiece.PieceType.ROOK);
                         case KNIGHT -> piece = new ChessPiece(pieceColor, ChessPiece.PieceType.KNIGHT);
                         case BISHOP -> piece = new ChessPiece(pieceColor, ChessPiece.PieceType.BISHOP);
                         case QUEEN -> piece = new ChessPiece(pieceColor, ChessPiece.PieceType.QUEEN);
-//                        case KING -> piece = new ChessPiece(pieceColor, ChessPiece.PieceType.KING);
                     }
 
                 }
@@ -153,7 +150,6 @@ public class ChessGame {
                         gameBoard.setBlackKingPos(move.getEndPosition());
                     }
                 }
-//        System.out.println("moved " + piece.getTeamColor() + " " +  piece.getPieceType() + move.toString());
                 switch (piece.getTeamColor()) {
                     case BLACK -> setTeamTurn(TeamColor.WHITE);
                     case WHITE -> setTeamTurn(TeamColor.BLACK);
@@ -182,7 +178,6 @@ public class ChessGame {
                 kingPos = gameBoard.getWhiteKingPos();
                 break;
         }
-//    System.out.println(teamColor + " king");
         for (int r = 1; r <= 8; r++) {
             for (int c = 1; c <= 8; c++) {
                 ChessPiece piece = gameBoard.getPiece(new ChessPosition(r, c));
@@ -227,8 +222,8 @@ public class ChessGame {
             for (int c = 1; c <= 8; c++) {
                 ChessPosition position = new ChessPosition(r, c);
                 if (gameBoard.getPiece(position) != null && gameBoard.getPiece(position).getTeamColor() == teamColor) {
-                    if (validMoves(position) == null || validMoves(position).isEmpty()) System.out.println(validMoves(position));
-                    else {
+                    //TODO FIX THIS
+                    if (validMoves(position) != null || !(validMoves(position).isEmpty())) {
                         return false;
                     }
                 }

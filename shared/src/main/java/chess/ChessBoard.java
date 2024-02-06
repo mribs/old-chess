@@ -9,12 +9,16 @@ import java.util.Arrays;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    ChessPiece[][] board = new ChessPiece[8][8];
+    ChessPiece[][] board;
+    private ChessPosition whiteKingPos;
+    private ChessPosition blackKingPos;
+
 
 
     public ChessBoard() {
         //board constructor should set up the board
-        
+        this.board = new ChessPiece[8][8];
+        resetBoard();
     }
 
     /**
@@ -24,15 +28,16 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        board[position.getRow() - 1][position.getColumn() - 1] = piece;
+        board[position.getRow() - 1][position.getColumn() - 1]=piece;
 ////    System.out.println("added " + piece.getPieceType() + " at " + position.getRow() + ", " + position.getColumn());
-//        if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-//            switch (piece.getTeamColor()) {
-//                case WHITE -> setWhiteKingPos(position);
-//                case BLACK -> setBlackKingPos(position);
-//            }
+        if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+            switch (piece.getTeamColor()) {
+                case WHITE -> setWhiteKingPos(position);
+                case BLACK -> setBlackKingPos(position);
+            }
 ////      System.out.println("king is at " + position.toString());
         }
+    }
 
     /**
      * Gets a chess piece on the chessboard
@@ -93,10 +98,26 @@ public class ChessBoard {
             }
         }
     }
-    private void removePiece(ChessPosition position) {
+    public void removePiece(ChessPosition position) {
         if (board[position.getRow() - 1][position.getColumn() - 1] != null) {
             board[position.getRow() - 1][position.getColumn() - 1] = null;
         }
+    }
+
+    public ChessPosition getWhiteKingPos() {
+        return whiteKingPos;
+    }
+
+    public void setWhiteKingPos(ChessPosition whiteKingPos) {
+        this.whiteKingPos=whiteKingPos;
+    }
+
+    public ChessPosition getBlackKingPos() {
+        return blackKingPos;
+    }
+
+    public void setBlackKingPos(ChessPosition blackKingPos) {
+        this.blackKingPos=blackKingPos;
     }
 
     @Override
@@ -110,4 +131,5 @@ public class ChessBoard {
     public int hashCode() {
         return Arrays.hashCode(board);
     }
+
 }

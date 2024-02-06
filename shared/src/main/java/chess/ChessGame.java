@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -9,16 +10,19 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
+    TeamColor whosTurn;
+    ChessBoard gameBoard;
 
     public ChessGame() {
-
+        whosTurn = TeamColor.WHITE;
+        gameBoard = new ChessBoard();
     }
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return whosTurn;
     }
 
     /**
@@ -27,7 +31,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        whosTurn = team;
     }
 
     /**
@@ -46,7 +50,47 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        Collection<ChessMove> validMoves = new HashSet<ChessMove>();
+        Collection<ChessMove> trueValidMoves = new HashSet<>();
+        //get piece at location
+        ChessPiece piece =getBoard().getPiece(startPosition);
+
+        //get that piece's moves
+        validMoves = piece.pieceMoves(gameBoard, startPosition);
+        if (validMoves == null) return null;
+        //check if any are legal (don't leave king in danger)
+        for (ChessMove move : validMoves) {
+            //check for check
+            ChessGame testGame = new ChessGame();
+            ChessBoard testBoard = new ChessBoard();
+            for (int r = 1; r <= 8; r++ ) {
+                for (int c = 1; c <= 8; c++) {
+                    if (gameBoard.getPiece(new ChessPosition(r,c)) != null) {
+                        testBoard.addPiece(new ChessPosition(r, c), gameBoard.getPiece(new ChessPosition(r, c)));
+                    }
+                }
+            }
+            testGame.setBoard(testBoard);
+            testBoard.removePiece(move.getStartPosition());
+            testBoard.addPiece(move.getEndPosition(), piece);
+            if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                if (piece.getTeamColor() == TeamColor.WHITE) {
+                    testBoard.setWhiteKingPos(move.getEndPosition());
+                }
+                if (piece.getTeamColor() == TeamColor.BLACK) {
+                    testBoard.setBlackKingPos(move.getEndPosition());
+                }
+            }
+            if (testGame.isInCheck(piece.getTeamColor()) == false) {
+                trueValidMoves.add(move);
+            }
+
+        }
+
+        if (trueValidMoves == null) {
+            return null;
+        }
+        return trueValidMoves;
     }
 
     /**

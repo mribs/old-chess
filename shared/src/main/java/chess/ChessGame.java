@@ -222,7 +222,6 @@ public class ChessGame {
             for (int c = 1; c <= 8; c++) {
                 ChessPosition position = new ChessPosition(r, c);
                 if (gameBoard.getPiece(position) != null && gameBoard.getPiece(position).getTeamColor() == teamColor) {
-                    //TODO FIX THIS
                     if (!(validMoves(position).isEmpty())) {
                         return false;
                     }

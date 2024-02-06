@@ -18,7 +18,7 @@ public class ChessBoard {
     public ChessBoard() {
         //board constructor should set up the board
         this.board = new ChessPiece[8][8];
-        resetBoard();
+//        resetBoard();
     }
 
     /**

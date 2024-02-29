@@ -14,16 +14,16 @@ public class Server {
         Handler clearHandler = new ClearHandler();
         Handler createHandler = new CreateGameHandler();
         Handler joinHandler = new JoinGameHandler();
-//        Handler listHandler = new ListGamesHandler();
-//        Handler loginHandler = new LoginHandler();
+        Handler listHandler = new ListGamesHandler();
+        Handler loginHandler = new LoginHandler();
 //        Handler logoutHandler = new LogoutHandler();
 //        Handler registerHandler = new RegisterHandler();
 
         clearHandler.setupRoutes();
         createHandler.setupRoutes();
         joinHandler.setupRoutes();
-//        listHandler.setupRoutes();
-//        loginHandler.setupRoutes();
+        listHandler.setupRoutes();
+        loginHandler.setupRoutes();
 //        logoutHandler.setupRoutes();
 //        registerHandler.setupRoutes();
 

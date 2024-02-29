@@ -16,16 +16,16 @@ public class Server {
         Handler joinHandler = new JoinGameHandler();
         Handler listHandler = new ListGamesHandler();
         Handler loginHandler = new LoginHandler();
-//        Handler logoutHandler = new LogoutHandler();
-//        Handler registerHandler = new RegisterHandler();
+        Handler logoutHandler = new LogoutHandler();
+        Handler registerHandler = new RegisterHandler();
 
         clearHandler.setupRoutes();
         createHandler.setupRoutes();
         joinHandler.setupRoutes();
         listHandler.setupRoutes();
         loginHandler.setupRoutes();
-//        logoutHandler.setupRoutes();
-//        registerHandler.setupRoutes();
+        logoutHandler.setupRoutes();
+        registerHandler.setupRoutes();
 
         Spark.awaitInitialization();
         return Spark.port();

@@ -12,13 +12,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import service.requests.CreateGameRequest;
 import service.requests.JoinGameRequest;
 import service.requests.ListGamesRequest;
+import service.requests.LoginRequest;
 import service.results.CreateGameResult;
 import service.results.JoinGameResult;
 import service.results.ListGamesResult;
-import service.services.ClearService;
-import service.services.CreateGameService;
-import service.services.JoinGameService;
-import service.services.ListGamesService;
+import service.results.LoginResult;
+import service.services.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -108,19 +107,24 @@ class ServiceTest {
   }
 
   @Test
-  void loginPass() {
+  void loginPass() throws UnauthorizedException, DataAccessException {
     //good password
-
-
-
+    LoginResult authKey = new LoginService().login(new LoginRequest("testUser", "testPass"));
+    assertTrue(TempDatabase.authTokenMap.containsKey(authKey.getAuthToken()));
   }
   @Test
   void loginFail() {
     //bad password
+    assertThrows(UnauthorizedException.class, () -> {
+      new LoginService().login(new LoginRequest("testUser", "notPass"));
+    });
+
   }
 
   @Test
-  void logoutPass() {
+  void logoutPass() throws UnauthorizedException, DataAccessException {
+    new LogoutService().logOut("testAuth");
+    assertFalse(TempDatabase.authTokenMap.containsKey("testAuth"));
 
   }
   @Test

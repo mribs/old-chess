@@ -11,11 +11,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import service.requests.CreateGameRequest;
 import service.requests.JoinGameRequest;
+import service.requests.ListGamesRequest;
 import service.results.CreateGameResult;
 import service.results.JoinGameResult;
+import service.results.ListGamesResult;
 import service.services.ClearService;
 import service.services.CreateGameService;
 import service.services.JoinGameService;
+import service.services.ListGamesService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,12 +75,18 @@ class ServiceTest {
 
   }
   @Test
-  void joinFail() {
+  void joinFail() throws BadRequestException, DataAccessException, AlreadyTakenException {
+    TempDatabase.userMap.put("testUser2", new User("meanUser", "password", "email"));
+    new JoinGameService().join(new JoinGameRequest(1, "White"), "meanUser");
+    assertThrows(AlreadyTakenException.class, () -> {
+      new JoinGameService().join(new JoinGameRequest(1, "White"), "testUser");
+    });
 
   }
 
   @Test
   void listPass() {
+    ListGamesResult result= new ListGamesService().listGames(new ListGamesRequest("testAuth"));
 
   }
   @Test

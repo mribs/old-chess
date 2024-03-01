@@ -6,7 +6,7 @@ public class JoinGameRequest {
 
   public JoinGameRequest(Integer gameID, String playerColor) {
     this.gameID=gameID;
-    this.playerColor=playerColor;
+    this.playerColor=playerColor.toUpperCase();
   }
   public JoinGameRequest(Integer gameID) {
     this.gameID = gameID;

@@ -5,7 +5,7 @@ import dataAccess.AlreadyTakenException;
 import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedException;
-import service.RegisterService;
+import service.services.RegisterService;
 import service.requests.RegisterRequest;
 import service.results.ErrorResult;
 import service.results.LoginResult;

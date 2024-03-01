@@ -1,7 +1,7 @@
 package dataAccess.handlers;
 
 import com.google.gson.Gson;
-import service.ClearService;
+import service.services.ClearService;
 import service.results.ClearResult;
 import spark.Spark;
 

@@ -1,4 +1,4 @@
-package service;
+package service.services;
 
 import dataAccess.AlreadyTakenException;
 import dataAccess.BadRequestException;

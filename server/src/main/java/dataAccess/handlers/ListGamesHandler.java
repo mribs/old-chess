@@ -2,7 +2,7 @@ package dataAccess.handlers;
 
 import com.google.gson.Gson;
 import dataAccess.*;
-import service.ListGamesService;
+import service.services.ListGamesService;
 import service.requests.ListGamesRequest;
 import service.results.ErrorResult;
 import service.results.ListGamesResult;

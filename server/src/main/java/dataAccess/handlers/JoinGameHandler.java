@@ -2,7 +2,7 @@ package dataAccess.handlers;
 
 import com.google.gson.Gson;
 import dataAccess.*;
-import service.JoinGameService;
+import service.services.JoinGameService;
 import service.requests.JoinGameRequest;
 import service.results.ErrorResult;
 import service.results.JoinGameResult;

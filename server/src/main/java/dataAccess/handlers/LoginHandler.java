@@ -3,7 +3,7 @@ package dataAccess.handlers;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedException;
-import service.LoginService;
+import service.services.LoginService;
 import service.requests.LoginRequest;
 import service.results.ErrorResult;
 import service.results.LoginResult;

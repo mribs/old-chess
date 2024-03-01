@@ -9,10 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import service.requests.CreateGameRequest;
-import service.requests.JoinGameRequest;
-import service.requests.ListGamesRequest;
-import service.requests.LoginRequest;
+import service.requests.*;
 import service.results.CreateGameResult;
 import service.results.JoinGameResult;
 import service.results.ListGamesResult;
@@ -129,15 +126,22 @@ class ServiceTest {
   }
   @Test
   void logoutFail() {
-
+    assertThrows(UnauthorizedException.class, () -> {
+      new LogoutService().logOut("bad Auth");
+    });
   }
 
   @Test
-  void registerPass() {
-
+  void registerPass() throws BadRequestException, DataAccessException, AlreadyTakenException {
+    LoginResult result = new RegisterService().register(new RegisterRequest("Test user2", "password", "email2"));
+    assertTrue(TempDatabase.authTokenMap.containsKey(result.getAuthToken()));
+    assertTrue(TempDatabase.userMap.containsKey("Test user2"));
   }
   @Test
   void registerFail() {
+    assertThrows(AlreadyTakenException.class, () -> {
+      new RegisterService().register(new RegisterRequest("testUser", "password", "email"));
+    });
 
   }
 }

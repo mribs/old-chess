@@ -5,12 +5,12 @@ import dataAccess.models.Game;
 import service.requests.ListGamesRequest;
 import service.results.ListGamesResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListGamesService {
   public ListGamesResult listGames(ListGamesRequest listGamesRequest){
     GameDAO gameDAO = new GameDAO();
-    List<Game> gameList= gameDAO.getGames();
-    return new ListGamesResult(gameList);
+    return new ListGamesResult(gameDAO.getGames());
   }
 }

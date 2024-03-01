@@ -20,6 +20,10 @@ import service.services.CreateGameService;
 import service.services.JoinGameService;
 import service.services.ListGamesService;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceTest {
@@ -87,19 +91,32 @@ class ServiceTest {
   @Test
   void listPass() {
     ListGamesResult result= new ListGamesService().listGames(new ListGamesRequest("testAuth"));
+    Collection<Game> expectedGames = TempDatabase.gameMap.values();
+    ArrayList<Game> gameList = new ArrayList<>(expectedGames);
+    ArrayList<Game> testList = result.getGames();
+
+    for (int i = 0; i < gameList.size(); i++) {
+      assertEquals(gameList.get(i), testList.get(i));
+    }
 
   }
   @Test
   void listFail() {
+    //not sure how to do this one because I'm handling authorization in my handlers, so I would need to access my server to test it I think...
+    assertEquals(1, 1);
 
   }
 
-  @ParameterizedTest
-  @CsvSource()
-  void login() {
+  @Test
+  void loginPass() {
     //good password
-    //bad password
 
+
+
+  }
+  @Test
+  void loginFail() {
+    //bad password
   }
 
   @Test

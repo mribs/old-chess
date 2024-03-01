@@ -45,7 +45,7 @@ public class GameDAO {
     TempDatabase.gameMap.clear();
   }
 
-  public List<Game> getGames() {
+  public ArrayList<Game> getGames() {
     Collection<Game> gameList = TempDatabase.gameMap.values();
     return new ArrayList<>(gameList);
   }

@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListGamesResult {
-  List<Game> games = new ArrayList<>();
+  ArrayList<Game> games = new ArrayList<>();
 
-  public ListGamesResult(List<Game> games) {
+  public ListGamesResult(ArrayList<Game> games) {
     this.games=games;
+  }
+
+  public ArrayList<Game> getGames() {
+    return games;
   }
 }

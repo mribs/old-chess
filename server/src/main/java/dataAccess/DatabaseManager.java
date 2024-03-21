@@ -45,6 +45,32 @@ public class DatabaseManager {
             throw new DataAccessException(e.getMessage());
         }
     }
+    static void createTables() {
+        try {
+            var conn=DriverManager.getConnection(connectionUrl, user, password);
+            var createUserTable="""
+                    CREATE TABLE IF NOT EXISTS user (
+                    username VARCHAR(255) NOT NULL,
+                    password VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (username)
+                    )""";
+            var createAuthTokenTable="""
+                    CREATE TABLE IF NOT EXISTS user (
+                    username VARCHAR(255) NOT NULL,
+                    authToken VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (authToken)
+                    )""";
+            try (var createTableStatement=conn.prepareStatement(createUserTable)) {
+                createTableStatement.executeUpdate();
+            }
+            try (var createTableStatement=conn.prepareStatement(createAuthTokenTable)) {
+                createTableStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     /**
      * Create a connection to the database and sets the catalog based upon the

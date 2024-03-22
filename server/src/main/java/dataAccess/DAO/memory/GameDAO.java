@@ -1,12 +1,10 @@
-package dataAccess.DAO;
+package dataAccess.DAO.memory;
 
-import chess.ChessGame;
 import dataAccess.DataAccessException;
 import dataAccess.TempDatabase;
 import dataAccess.models.Game;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class GameDAO {
 

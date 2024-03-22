@@ -1,13 +1,11 @@
-package dataAccess.DAO;
+package dataAccess.DAO.memory;
 
 import dataAccess.DataAccessException;
 import dataAccess.TempDatabase;
 import dataAccess.UnauthorizedException;
 import dataAccess.models.AuthToken;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AuthDAO {
 //creates a new authToken object

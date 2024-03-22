@@ -1,4 +1,4 @@
-package dataAccess.DAO;
+package dataAccess.DAO.SQL;
 
 import dataAccess.AlreadyTakenException;
 import dataAccess.BadRequestException;
@@ -6,12 +6,10 @@ import dataAccess.DataAccessException;
 import dataAccess.TempDatabase;
 import dataAccess.models.User;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class UserDAO {
   //creates new user
-  public void createUser(User u) throws DataAccessException, AlreadyTakenException, BadRequestException {
+  public void createUser(User u) throws AlreadyTakenException, BadRequestException {
     if (u == null || u.getUsername() == null) throw new BadRequestException();
     if (TempDatabase.userMap.containsKey(u.getUsername()) ) throw new AlreadyTakenException();
 

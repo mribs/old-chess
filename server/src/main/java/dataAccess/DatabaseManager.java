@@ -42,6 +42,7 @@ public class DatabaseManager {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            System.out.println(e);
             throw new DataAccessException(e.getMessage());
         }
     }
@@ -91,6 +92,15 @@ public class DatabaseManager {
             return conn;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    public static void configureDatabase() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            createTables();
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
         }
     }
 }

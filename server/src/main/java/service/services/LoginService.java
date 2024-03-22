@@ -1,8 +1,8 @@
 package service.services;
 
 
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.UserDAO;
+import dataAccess.DAO.memory.AuthDAO;
+import dataAccess.DAO.memory.UserDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedException;
 import dataAccess.models.AuthToken;

@@ -3,7 +3,10 @@ package service.services;
 import dataAccess.AlreadyTakenException;
 import dataAccess.BadRequestException;
 import dataAccess.DAO.memory.AuthDAO;
-import dataAccess.DAO.memory.UserDAO;
+
+import dataAccess.DAO.SQL.UserDAO;
+//import dataAccess.DAO.memory.UserDAO;
+
 import dataAccess.DataAccessException;
 import dataAccess.models.AuthToken;
 import dataAccess.models.User;

@@ -34,11 +34,15 @@ public class DatabaseManager {
     /**
      * Creates the database if it does not already exist.
      */
-    static void createDatabase() throws DataAccessException {
+    public static void createDatabase() throws DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+            var useStatement = "USE " + databaseName;
             var conn = DriverManager.getConnection(connectionUrl, user, password);
             try (var preparedStatement = conn.prepareStatement(statement)) {
+                preparedStatement.executeUpdate();
+            }
+            try (var preparedStatement = conn.prepareStatement(useStatement)) {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -47,8 +51,7 @@ public class DatabaseManager {
         }
     }
     static void createTables() {
-        try {
-            var conn=DriverManager.getConnection(connectionUrl, user, password);
+        try (var conn = DatabaseManager.getConnection()){
             var createUserTable="""
                     CREATE TABLE IF NOT EXISTS user (
                     username VARCHAR(255) NOT NULL,
@@ -57,18 +60,19 @@ public class DatabaseManager {
                     PRIMARY KEY (username)
                     )""";
             var createAuthTokenTable="""
-                    CREATE TABLE IF NOT EXISTS user (
+                    CREATE TABLE IF NOT EXISTS authToken (
                     username VARCHAR(255) NOT NULL,
                     authToken VARCHAR(255) NOT NULL,
                     PRIMARY KEY (authToken)
                     )""";
-            try (var createTableStatement=conn.prepareStatement(createUserTable)) {
-                createTableStatement.executeUpdate();
+            //TODO add in the game table
+            try (var createUserTableStatement=conn.prepareStatement(createUserTable)) {
+                createUserTableStatement.executeUpdate();
             }
-            try (var createTableStatement=conn.prepareStatement(createAuthTokenTable)) {
-                createTableStatement.executeUpdate();
+            try (var createAuthTableStatement=conn.prepareStatement(createAuthTokenTable)) {
+                createAuthTableStatement.executeUpdate();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | DataAccessException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -85,7 +89,7 @@ public class DatabaseManager {
      * }
      * </code>
      */
-    static Connection getConnection() throws DataAccessException {
+    public static Connection getConnection() throws DataAccessException {
         try {
             var conn = DriverManager.getConnection(connectionUrl, user, password);
             conn.setCatalog(databaseName);

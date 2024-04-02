@@ -1,21 +1,29 @@
 package dataAccess.DAO.SQL;
 
+import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
 import dataAccess.models.Game;
+import dataAccess.models.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class GameDAO {
+public class GameDAO extends DAO {
 
   //inserts new game into database
   public Game insert(String gameName) throws DataAccessException {
-    //create new game if gameName doesn't already exist
-//    if (gameMap.containsKey(gameName)) throw new DataAccessException("bad request");
-
     Game game = new Game(gameName);
-    Database.gameMap.put(game.getGameID(), game);
+    int gameID = game.getGameID();
+    var gameJSON = new Gson().toJson(game.getGame());
+    String white = null;
+    String black = null;
+    String observers = null;
+
+
+    var statement = "INSERT INTO game (gameID, gameName, game, whiteUsername, blackUsername, observers) VALUES (?, ?, ?, ?, ?, ?)";
+    var json = new Gson().toJson(game);
+    executeUpdate(statement, gameID, gameName, gameJSON, null, null, null, json);
 
     return game;
   }
@@ -36,12 +44,18 @@ public class GameDAO {
 
   //removes game from database
   public void remove(Integer gameID) throws DataAccessException {
-    Database.gameMap.remove(gameID);
+    var statement = "DELETE FROM game WHERE gameID=?";
+    executeUpdate(statement, gameID);
   }
 
   //clears database
   public void clearGames() {
-    Database.gameMap.clear();
+    var statement = "TRUNCATE game";
+    try {
+      executeUpdate(statement);
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public ArrayList<Game> getGames() {

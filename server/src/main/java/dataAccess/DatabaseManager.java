@@ -68,11 +68,11 @@ public class DatabaseManager {
             var createGameTable="""
                     CREATE TABLE IF NOT EXISTS game (
                     gameID INT NOT NULL,
-                    whiteUsername VARCHAR(255),
-                    blackUsername VARCHAR(255),
-                    observers VARCHAR(255),
                     gameName VARCHAR(255) NOT NULL,
-                    game VARCHAR(255) NOT NULL,
+                    game TEXT NOT NULL,
+                    whiteUsername VARCHAR(255) DEFAULT NULL,
+                    blackUsername VARCHAR(255) DEFAULT NULL,
+                    observers TEXT DEFAULT NULL,
                     PRIMARY KEY (gameID)
                     )""";
             try (var createUserTableStatement=conn.prepareStatement(createUserTable)) {

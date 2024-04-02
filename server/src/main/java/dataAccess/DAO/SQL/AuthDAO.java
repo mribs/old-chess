@@ -57,8 +57,15 @@ public class AuthDAO extends DAO{
 
   //delete an authToken object
   public void deleteToken(String authToken) throws DataAccessException {
-    var statement = "DELETE FROM authToken WHERE authToken=?";
-    executeUpdate(statement, authToken);
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "DELETE FROM authToken WHERE authToken=?";
+      try (var ps = conn.prepareStatement(statement)) {
+        ps.setString(1, authToken);
+        ps.executeUpdate();
+      }
+    } catch (Exception e) {
+      throw new DataAccessException("something went wrong");
+    }
   }
 
   public void clearTokens() {

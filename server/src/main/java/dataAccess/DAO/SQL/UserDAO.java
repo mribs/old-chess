@@ -20,7 +20,7 @@ public class UserDAO extends DAO {
 
     var statement = "INSERT INTO user (username, password, email) VALUES (?, ?, ?)";
     var json = new Gson().toJson(user);
-    var id = executeUpdate(statement, user.getUsername(), user.getEmail(), user.getPassword(), json);
+    executeUpdate(statement, user.getUsername(), user.getPassword(), user.getEmail(), json);
 
   }
 

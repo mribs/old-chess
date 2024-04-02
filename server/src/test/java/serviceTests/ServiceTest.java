@@ -18,18 +18,17 @@ import service.services.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceTest {
 
   @BeforeEach
-  void setUp() {
-
+  void setUp(){
     //add 1 user
     TempDatabase.userMap.put("testUser", new User("testUser", "testPass", "test"));
     TempDatabase.authTokenMap.put("testAuth", new AuthToken("testUser", "testAuth"));
+
     //add 1 game
     TempDatabase.gameMap.put(1, new Game("testGame"));
   }
@@ -37,8 +36,12 @@ class ServiceTest {
   @AfterEach
   void takeDown() {
     TempDatabase.gameMap.clear();
+
     TempDatabase.authTokenMap.clear();
+
     TempDatabase.userMap.clear();
+
+    
   }
 
   @Test

@@ -1,19 +1,24 @@
 package dataAccess.DAO.SQL;
 
-import dataAccess.DataAccessException;
-import dataAccess.TempDatabase;
-import dataAccess.UnauthorizedException;
+import com.google.gson.Gson;
+import dataAccess.*;
 import dataAccess.models.AuthToken;
+import dataAccess.models.User;
 
 import java.util.UUID;
 
-public class AuthDAO {
+public class AuthDAO extends DAO{
   //creates a new authToken object
   public AuthToken createToken(String username) throws DataAccessException {
     String authTokenString = UUID.randomUUID().toString();
     AuthToken newAuthToken = new AuthToken(username, authTokenString);
 
-    TempDatabase.authTokenMap.put(authTokenString, newAuthToken);
+    if (newAuthToken == null) throw new DataAccessException("auth token didn't go");
+
+    var statement = "INSERT INTO authtoken (username, authtoken) VALUES (?, ?)";
+//    var json = new Gson().toJson(newAuthToken);
+    executeUpdate(statement, newAuthToken.getUsername(), newAuthToken.getAuthToken());
+
     return newAuthToken;
   }
 

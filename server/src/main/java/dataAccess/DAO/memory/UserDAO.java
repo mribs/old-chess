@@ -3,7 +3,7 @@ package dataAccess.DAO.memory;
 import dataAccess.AlreadyTakenException;
 import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
-import dataAccess.TempDatabase;
+import dataAccess.Database;
 import dataAccess.models.User;
 
 
@@ -11,16 +11,16 @@ public class UserDAO {
   //creates new user
   public void createUser(User u) throws AlreadyTakenException, BadRequestException {
     if (u == null || u.getUsername() == null) throw new BadRequestException();
-    if (TempDatabase.userMap.containsKey(u.getUsername()) ) throw new AlreadyTakenException();
+    if (Database.userMap.containsKey(u.getUsername()) ) throw new AlreadyTakenException();
 
-    TempDatabase.userMap.put(u.getUsername(), u);
+    Database.userMap.put(u.getUsername(), u);
   }
 
   //returns user information
   public User readUser(String userName) throws DataAccessException {
     if (userName == null) throw new DataAccessException("userName must not be null");
 
-    return TempDatabase.userMap.get(userName);
+    return Database.userMap.get(userName);
   }
 
   //updates user information
@@ -29,11 +29,11 @@ public class UserDAO {
 
   //deletes user
   void deleteUser(User u) throws  DataAccessException {
-    TempDatabase.userMap.remove(u);
+    Database.userMap.remove(u);
   }
 
   //clear users
   public void clearUsers() {
-    TempDatabase.userMap.clear();
+    Database.userMap.clear();
   }
 }

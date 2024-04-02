@@ -1,7 +1,7 @@
 package dataAccess.DAO.memory;
 
 import dataAccess.DataAccessException;
-import dataAccess.TempDatabase;
+import dataAccess.Database;
 import dataAccess.UnauthorizedException;
 import dataAccess.models.AuthToken;
 
@@ -13,25 +13,25 @@ public class AuthDAO {
     String authTokenString = UUID.randomUUID().toString();
     AuthToken newAuthToken = new AuthToken(username, authTokenString);
 
-    TempDatabase.authTokenMap.put(authTokenString, newAuthToken);
+    Database.authTokenMap.put(authTokenString, newAuthToken);
     return newAuthToken;
   }
 
   //reads an authToken object
   public AuthToken readToken(String authToken) {
-    AuthToken authToken1 = TempDatabase.authTokenMap.get(authToken);
+    AuthToken authToken1 = Database.authTokenMap.get(authToken);
     return authToken1;
   }
 //update an authToken object
   public void updateToken(String currAuthToken, AuthToken newAuthToken) throws UnauthorizedException {
-    if (TempDatabase.authTokenMap.containsKey(currAuthToken)) {
-      TempDatabase.authTokenMap.put(currAuthToken, newAuthToken);
+    if (Database.authTokenMap.containsKey(currAuthToken)) {
+      Database.authTokenMap.put(currAuthToken, newAuthToken);
     }
     else throw new UnauthorizedException();
   }
 //delete an authToken object
   public AuthToken deleteToken(String authToken) throws UnauthorizedException {
-    AuthToken oldAuthToken = TempDatabase.authTokenMap.remove(authToken);
+    AuthToken oldAuthToken = Database.authTokenMap.remove(authToken);
     if (oldAuthToken == null) {
       throw new UnauthorizedException();
     }
@@ -39,6 +39,6 @@ public class AuthDAO {
   }
 
   public void clearTokens() {
-    TempDatabase.authTokenMap.clear();
+    Database.authTokenMap.clear();
   }
 }

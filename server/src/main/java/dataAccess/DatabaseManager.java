@@ -65,12 +65,24 @@ public class DatabaseManager {
                     authToken VARCHAR(255) NOT NULL,
                     PRIMARY KEY (authToken)
                     )""";
-            //TODO add in the game table
+            var createGameTable="""
+                    CREATE TABLE IF NOT EXISTS game (
+                    gameID INT NOT NULL,
+                    whiteUsername VARCHAR(255),
+                    blackUsername VARCHAR(255),
+                    observers VARCHAR(255),
+                    gameName VARCHAR(255) NOT NULL,
+                    game VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (gameID)
+                    )""";
             try (var createUserTableStatement=conn.prepareStatement(createUserTable)) {
                 createUserTableStatement.executeUpdate();
             }
             try (var createAuthTableStatement=conn.prepareStatement(createAuthTokenTable)) {
                 createAuthTableStatement.executeUpdate();
+            }
+            try (var createGameTableStatement=conn.prepareStatement(createGameTable)) {
+                createGameTableStatement.executeUpdate();
             }
         } catch (SQLException | DataAccessException e) {
             throw new RuntimeException(e.getMessage());

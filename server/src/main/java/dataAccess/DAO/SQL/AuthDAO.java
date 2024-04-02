@@ -62,6 +62,11 @@ public class AuthDAO extends DAO{
   }
 
   public void clearTokens() {
-    TempDatabase.authTokenMap.clear();
+    var statement = "TRUNCATE authToken";
+    try {
+      executeUpdate(statement);
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -9,7 +9,7 @@ import service.results.CreateGameResult;
 
 public class CreateGameService {
   public CreateGameResult createGame(CreateGameRequest request) throws DataAccessException, BadRequestException {
-   if (request.getGameName() == "") {
+   if (request.getGameName() == "" || request.getGameName() == null) {
      throw new BadRequestException();
    }
     GameDAO gameDAO = new GameDAO();

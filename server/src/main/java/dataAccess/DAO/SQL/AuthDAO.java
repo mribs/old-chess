@@ -11,7 +11,8 @@ import java.util.UUID;
 
 public class AuthDAO extends DAO{
   //creates a new authToken object
-  public AuthToken createToken(String username) throws DataAccessException {
+  public AuthToken createToken(String username) throws DataAccessException, BadRequestException {
+    if (username == null) throw new BadRequestException();
     String authTokenString = UUID.randomUUID().toString();
     AuthToken newAuthToken = new AuthToken(username, authTokenString);
 

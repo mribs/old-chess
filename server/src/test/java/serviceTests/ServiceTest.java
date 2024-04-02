@@ -105,7 +105,7 @@ class ServiceTest {
   }
 
   @Test
-  void loginPass() throws UnauthorizedException, DataAccessException {
+  void loginPass() throws UnauthorizedException, DataAccessException, BadRequestException {
     //good password
     LoginResult authKey = new LoginService().login(new LoginRequest("testUser", "testPass"));
     assertTrue(Database.authTokenMap.containsKey(authKey.getAuthToken()));

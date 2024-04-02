@@ -1,10 +1,9 @@
 package dataAccessTests;
 
+import dataAccess.BadRequestException;
 import dataAccess.DAO.SQL.AuthDAO;
-import dataAccess.DAO.SQL.UserDAO;
 import dataAccess.DataAccessException;
 import dataAccess.models.AuthToken;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,15 @@ class AuthDAOTest {
   }
 
   @Test
-  void readTokenTest() throws DataAccessException {
+  void failCreateTokenTest() {
+    AuthDAO authDAO = new AuthDAO();
+    assertThrows(BadRequestException.class, () -> {
+      authDAO.createToken(null);
+    });
+  }
+
+  @Test
+  void readTokenTest() throws DataAccessException, BadRequestException {
     AuthDAO authDAO = new AuthDAO();
     AuthToken authToken = authDAO.createToken("testUserName");
 
@@ -36,6 +43,20 @@ class AuthDAOTest {
   void failReadTokenTest() throws DataAccessException {
     AuthDAO authDAO = new AuthDAO();
     assertNull(authDAO.readToken("doesn'tExist"));
+  }
+
+  @Test
+  void clearTokenTest() {
+    AuthDAO authDAO = new AuthDAO();
+    assertDoesNotThrow(() -> authDAO.clearTokens());
+  }
+
+  @Test
+  void removeTokenTest() throws BadRequestException, DataAccessException {
+    AuthDAO authDAO = new AuthDAO();
+    AuthToken testToken = authDAO.createToken("testUser");
+
+    assertDoesNotThrow(() -> authDAO.deleteToken(testToken.getAuthToken()));
   }
 
 }

@@ -1,13 +1,19 @@
 package dataAccess.DAO.SQL;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
+import dataAccess.DatabaseManager;
+import dataAccess.models.AuthToken;
 import dataAccess.models.Game;
 import dataAccess.models.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class GameDAO extends DAO {
 
@@ -25,9 +31,33 @@ public class GameDAO extends DAO {
   }
 
   //finds game by gameID
-  public Game find(Integer gameID){
-    Game game = Database.gameMap.get(gameID);
-    return game;
+  public Game find(Integer gameID) throws DataAccessException {
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "SELECT gameID, gameName, game, whiteUsername, blackUsername, observers FROM game WHERE gameID=?";
+      try (var ps = conn.prepareStatement(statement)) {
+        ps.setString(1, String.valueOf(gameID));
+        try (var rs = ps.executeQuery()) {
+          if (rs.next()) {
+            return readGameInfo(rs);
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw new DataAccessException("something went wrong");
+    }
+    return null;
+  }
+
+  private Game readGameInfo(ResultSet rs) throws SQLException {
+    var gameID = rs.getInt("gameID");
+    var gameName = rs.getString("gameName");
+    var game = rs.getString("game");
+    var whiteUsername = rs.getString("whiteUsername");
+    var blackUsername = rs.getString("blackUsername");
+    var observers = rs.getArray("observers");
+
+    ChessGame chessGame = new Gson().fromJson(game, ChessGame.class);
+    return new Game(gameID, whiteUsername, blackUsername, (List<String>) observers, gameName, chessGame);
   }
 
   //uses player's username to "claim" a spot in a game

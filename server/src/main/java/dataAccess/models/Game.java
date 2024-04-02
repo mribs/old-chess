@@ -23,6 +23,14 @@ public class Game {
     this.observers = new ArrayList<>();
   }
 
+  public Game(int gameID, String whiteUsername, String blackUsername, List<String> observers, String gameName, ChessGame game) {
+    this.gameID=gameID;
+    this.whiteUsername=whiteUsername;
+    this.blackUsername=blackUsername;
+    this.observers=observers;
+    this.gameName=gameName;
+    this.game=game;
+  }
   //getters and setters
 
   public List<String> getObservers() {

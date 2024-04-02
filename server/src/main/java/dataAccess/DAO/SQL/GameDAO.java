@@ -63,7 +63,10 @@ public class GameDAO extends DAO {
 
   //uses player's username to "claim" a spot in a game
   public void claimSpot(Integer gameID, Game game) throws DataAccessException {
-    Database.gameMap.replace(gameID, game);
+    String gameJson = new Gson().toJson(game.getGame());
+    String observers = new Gson().toJson(game.getObservers());
+    var statement = "UPDATE game SET gameName=?, game=?, whiteUsername=?, blackUsername=?, observers=? WHERE gameID=?";
+    executeUpdate(statement, game.getGameName(), gameJson, game.getWhiteUsername(), game.getBlackUsername(), observers, String.valueOf(gameID));
   }
 
   //updates game moves in database
@@ -86,7 +89,22 @@ public class GameDAO extends DAO {
   }
 
   public ArrayList<Game> getGames() {
-    Collection<Game> gameList = Database.gameMap.values();
-    return new ArrayList<>(gameList);
+    var result = new ArrayList<Game>();
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "SELECT  gameID, gameName, game, whiteUsername, blackUsername, observers FROM game";
+      try (var ps = conn.prepareStatement(statement)) {
+        try (var rs = ps.executeQuery()) {
+          while (rs.next()) {
+            result.add(readGameInfo(rs));
+          }
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    } catch (DataAccessException | SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return result;
   }
 }

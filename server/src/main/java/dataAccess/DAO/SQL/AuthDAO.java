@@ -48,19 +48,17 @@ public class AuthDAO extends DAO{
     return new AuthToken(userName, authToken);
   }
   //update an authToken object
-  public void updateToken(String currAuthToken, AuthToken newAuthToken) throws UnauthorizedException {
-    if (TempDatabase.authTokenMap.containsKey(currAuthToken)) {
-      TempDatabase.authTokenMap.put(currAuthToken, newAuthToken);
-    }
-    else throw new UnauthorizedException();
-  }
+//  public void updateToken(String currAuthToken, AuthToken newAuthToken) throws UnauthorizedException {
+//    if (TempDatabase.authTokenMap.containsKey(currAuthToken)) {
+//      TempDatabase.authTokenMap.put(currAuthToken, newAuthToken);
+//    }
+//    else throw new UnauthorizedException();
+//  }
+
   //delete an authToken object
-  public AuthToken deleteToken(String authToken) throws UnauthorizedException {
-    AuthToken oldAuthToken = TempDatabase.authTokenMap.remove(authToken);
-    if (oldAuthToken == null) {
-      throw new UnauthorizedException();
-    }
-    return oldAuthToken;
+  public void deleteToken(String authToken) throws DataAccessException {
+    var statement = "DELETE FROM authToken WHERE authToken=?";
+    executeUpdate(statement, authToken);
   }
 
   public void clearTokens() {

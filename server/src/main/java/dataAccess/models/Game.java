@@ -4,6 +4,7 @@ import chess.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Game {
   int gameID;
@@ -80,4 +81,12 @@ public class Game {
   public void setGame(ChessGame game) {
     this.game=game;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Game game1)) return false;
+    return gameID == game1.gameID && Objects.equals(whiteUsername, game1.whiteUsername) && Objects.equals(blackUsername, game1.blackUsername) && Objects.equals(observers, game1.observers) && Objects.equals(gameName, game1.gameName) && Objects.equals(game, game1.game);
+  }
+
 }

@@ -54,10 +54,11 @@ public class GameDAO extends DAO {
     var game = rs.getString("game");
     var whiteUsername = rs.getString("whiteUsername");
     var blackUsername = rs.getString("blackUsername");
-    var observers = rs.getArray("observers");
+    var observers = rs.getString("observers");
 
+    ArrayList watchers = new ArrayList<>();
     ChessGame chessGame = new Gson().fromJson(game, ChessGame.class);
-    return new Game(gameID, whiteUsername, blackUsername, (List<String>) observers, gameName, chessGame);
+    return new Game(gameID, whiteUsername, blackUsername, watchers, gameName, chessGame);
   }
 
   //uses player's username to "claim" a spot in a game

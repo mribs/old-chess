@@ -3,17 +3,12 @@ package dataAccess.DAO.SQL;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
 import dataAccess.DatabaseManager;
-import dataAccess.models.AuthToken;
 import dataAccess.models.Game;
-import dataAccess.models.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class GameDAO extends DAO {
 

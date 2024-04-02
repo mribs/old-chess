@@ -16,14 +16,10 @@ public class GameDAO extends DAO {
     Game game = new Game(gameName);
     int gameID = game.getGameID();
     var gameJSON = new Gson().toJson(game.getGame());
-    String white = null;
-    String black = null;
-    String observers = null;
 
 
     var statement = "INSERT INTO game (gameID, gameName, game, whiteUsername, blackUsername, observers) VALUES (?, ?, ?, ?, ?, ?)";
-    var json = new Gson().toJson(game);
-    executeUpdate(statement, gameID, gameName, gameJSON, null, null, null, json);
+    executeUpdate(statement, String.valueOf(gameID), gameName, gameJSON,null,null,null);
 
     return game;
   }

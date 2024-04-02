@@ -18,8 +18,7 @@ public class AuthDAO extends DAO{
     if (newAuthToken == null) throw new DataAccessException("auth token didn't go");
 
     var statement = "INSERT INTO authToken (username, authToken) VALUES (?, ?)";
-    var json = new Gson().toJson(newAuthToken);
-    executeUpdate(statement, newAuthToken.getUsername(), newAuthToken.getAuthToken(), json);
+    executeUpdate(statement, newAuthToken.getUsername(), newAuthToken.getAuthToken());
 
     return newAuthToken;
   }

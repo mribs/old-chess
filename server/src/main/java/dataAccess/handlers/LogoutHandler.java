@@ -1,6 +1,7 @@
 package dataAccess.handlers;
 
 import com.google.gson.Gson;
+import dataAccess.Authorizer;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedException;
 import service.services.LogoutService;
@@ -15,7 +16,8 @@ public class LogoutHandler implements Handler{
     Spark.delete("/session", (req, res) -> {
       LogoutService logout = new LogoutService();
       String authTokenString = req.headers("authorization");
-      if (authTokenString == null) throw new UnauthorizedException();
+      Authorizer authorizer = new Authorizer();
+      authorizer.authorize(authTokenString);
       logout.logOut(authTokenString);
       return new ClearResult("User Logged Out");
     }, gson::toJson);

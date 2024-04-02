@@ -12,7 +12,7 @@ public class DAO {
    int executeUpdate(String statement, Object... params) throws DataAccessException {
     try (var conn =DatabaseManager.getConnection()) {
       try (var ps = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS)) {
-        for (var i = 0; i < params.length - 1; i++) {
+        for (var i = 0; i < params.length; i++) {
           var param = params[i];
           if (param instanceof String p) ps.setString(i + 1, p);
           else if (param == null) ps.setNull((i +1), NULL);

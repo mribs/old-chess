@@ -5,6 +5,8 @@ import dataAccess.*;
 import dataAccess.models.AuthToken;
 import dataAccess.models.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class AuthDAO extends DAO{
@@ -15,17 +17,35 @@ public class AuthDAO extends DAO{
 
     if (newAuthToken == null) throw new DataAccessException("auth token didn't go");
 
-    var statement = "INSERT INTO authtoken (username, authtoken) VALUES (?, ?)";
-//    var json = new Gson().toJson(newAuthToken);
-    executeUpdate(statement, newAuthToken.getUsername(), newAuthToken.getAuthToken());
+    var statement = "INSERT INTO authToken (username, authToken) VALUES (?, ?)";
+    var json = new Gson().toJson(newAuthToken);
+    executeUpdate(statement, newAuthToken.getUsername(), newAuthToken.getAuthToken(), json);
 
     return newAuthToken;
   }
 
   //reads an authToken object
-  public AuthToken readToken(String authToken) {
-    AuthToken authToken1 = TempDatabase.authTokenMap.get(authToken);
-    return authToken1;
+  public AuthToken readToken(String authToken) throws DataAccessException {
+    try (var conn = DatabaseManager.getConnection()) {
+      var statement = "SELECT username, authtoken FROM authToken WHERE authToken=?";
+      try (var ps = conn.prepareStatement(statement)) {
+        ps.setString(1, authToken);
+        try (var rs = ps.executeQuery()) {
+          if (rs.next()) {
+            return readTokenInfo(rs);
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw new DataAccessException("something went wrong");
+    }
+    return null;
+  }
+
+  private AuthToken readTokenInfo(ResultSet rs) throws SQLException {
+    var userName = rs.getString("username");
+    var authToken = rs.getString("authtoken");
+    return new AuthToken(userName, authToken);
   }
   //update an authToken object
   public void updateToken(String currAuthToken, AuthToken newAuthToken) throws UnauthorizedException {

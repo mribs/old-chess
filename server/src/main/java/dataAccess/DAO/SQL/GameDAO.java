@@ -2,6 +2,7 @@ package dataAccess.DAO.SQL;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
+import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
 import dataAccess.models.Game;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 public class GameDAO extends DAO {
 
   //inserts new game into database
-  public Game insert(String gameName) throws DataAccessException {
+  public Game insert(String gameName) throws DataAccessException, BadRequestException {
+    if (gameName == "" || gameName == null) throw new BadRequestException();
     Game game = new Game(gameName);
     int gameID = game.getGameID();
     var gameJSON = new Gson().toJson(game.getGame());
@@ -58,14 +60,12 @@ public class GameDAO extends DAO {
 
   //uses player's username to "claim" a spot in a game
   public void claimSpot(Integer gameID, Game game) throws DataAccessException {
+    if (find(gameID) == null) throw new DataAccessException("cannot find gameID");
     String gameJson = new Gson().toJson(game.getGame());
     String observers = new Gson().toJson(game.getObservers());
     var statement = "UPDATE game SET gameName=?, game=?, whiteUsername=?, blackUsername=?, observers=? WHERE gameID=?";
     executeUpdate(statement, game.getGameName(), gameJson, game.getWhiteUsername(), game.getBlackUsername(), observers, String.valueOf(gameID));
   }
-
-  //updates game moves in database
-  public  void updateGame(String gameID) {}
 
   //removes game from database
   public void remove(Integer gameID) throws DataAccessException {

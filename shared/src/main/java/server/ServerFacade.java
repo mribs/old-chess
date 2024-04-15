@@ -37,6 +37,15 @@ public class ServerFacade {
     this.makeRequest("DELETE", path, null, authToken, null);
   }
 
+  public int createGame(String authToken, String gameName) throws DataAccessException {
+    Game game = new Game(gameName);
+    var path = "/game";
+    int gameID = 0;
+    Game returnedGame = this.makeRequest("POST", path, game, authToken, Game.class);
+    gameID = returnedGame.getGameID();
+    return gameID;
+  }
+
   public void deletePet(int id) throws DataAccessException {
     var path = String.format("/pet/%s", id);
     this.makeRequest("DELETE", path, null, null);
@@ -47,11 +56,11 @@ public class ServerFacade {
     this.makeRequest("DELETE", path, null, null);
   }
 
-  public Game[] listPets() throws DataAccessException {
-    var path = "/pet";
-    record listPetResponse(Game[] games) {
+  public Game[] listGames(String authToken) throws DataAccessException {
+    var path = "/game";
+    record listGamesResponse(Game[] games) {
     }
-    var response = this.makeRequest("GET", path, null, listPetResponse.class);
+    var response = this.makeRequest("GET", path, null, authToken, listGamesResponse.class);
     return response.games();
   }
 

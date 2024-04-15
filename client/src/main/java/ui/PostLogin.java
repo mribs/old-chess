@@ -1,6 +1,8 @@
 package ui;
 
+import exceptions.DataAccessException;
 import models.AuthToken;
+import models.Game;
 import models.User;
 import server.ServerFacade;
 
@@ -22,12 +24,34 @@ public class PostLogin {
     return help;
   }
 
-  public  String logout(AuthToken authToken) {
+  public void logout(AuthToken authToken) {
     try {
       serverFacade.logout(authToken.getAuthToken());
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    return null;
   }
+
+  public String createGame(AuthToken authToken, String gameName) {
+    int gameID = 0;
+    String returnString;
+    try {
+      gameID=serverFacade.createGame(authToken.getAuthToken(), gameName);
+      returnString ="Created! The gameID is: " + gameID;
+    } catch (DataAccessException e) {
+      returnString = "Could not create the game: " + e.getMessage();
+    }
+
+    return returnString;
+  }
+  public Game[] listGames(AuthToken authToken) {
+    Game[] games = null;
+    try {
+      games = serverFacade.listGames(authToken.getAuthToken());
+    } catch (Exception e) {
+      System.out.println( "Could not list games: " + e.getMessage());
+    }
+    return games;
+  }
+
 }

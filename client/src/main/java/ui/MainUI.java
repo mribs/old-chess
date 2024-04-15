@@ -7,7 +7,6 @@ public class MainUI {
   private final Player player;
 
   public MainUI(String serverUrl) {
-    //TODO: implement player using serverURl?? PETSHOP example
     player = new Player(serverUrl);
   }
 
@@ -19,7 +18,7 @@ public class MainUI {
     var result = "";
     while (!result.equals("quit")) {
       //TODO: align this better
-      System.out.println(EscapeSequences.SET_TEXT_BLINKING + ">>");
+      System.out.println(EscapeSequences.SET_TEXT_BLINKING + "Enter Option >>");
       String line = scanner.nextLine();
 
       try {
@@ -37,8 +36,5 @@ public class MainUI {
     System.out.println();
   }
 
-//  private void printPrompt() {
-//    System.out.println("\n" + RESET );
-//  }
 
 }

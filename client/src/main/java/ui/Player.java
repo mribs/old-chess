@@ -1,10 +1,12 @@
 package ui;
 
 import models.AuthToken;
+import models.Game;
 import models.User;
 import server.ServerFacade;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Player {
@@ -14,6 +16,7 @@ public class Player {
   private Scanner scanner;
   private ServerFacade serverFacade;
   private AuthToken authToken;
+  private Game[] gameList;
 
   public Player(String serverUrl) {
     this.serverFacade = new ServerFacade(serverUrl);
@@ -22,6 +25,7 @@ public class Player {
     this.postLogin = new PostLogin(serverFacade);
     this.scanner = new Scanner(System.in);
     this.authToken = null;
+
   }
 
   public String help() {
@@ -88,6 +92,34 @@ public class Player {
     return returnString;
   }
 
+  private String createGame() {
+    try {
+      System.out.println("Enter game name:");
+      String gameName = scanner.nextLine();
+      return postLogin.createGame(authToken, gameName);
+    } catch (Exception e) {
+      return "error creating game: " + e.getMessage();
+    }
+  }
+
+  private String listGames() {
+    try {
+      Game[] games =  postLogin.listGames(authToken);
+      StringBuilder returnString = new StringBuilder();
+      int indexPlusOne = 1;
+      if (games == null || games.length == 0) return "No games to list";
+      for (Game game : games) {
+        System.out.println(indexPlusOne + ":\n   gameID: " + game.getGameID() + ", Game Name: " + game.getGameName() +
+                ", White Player: " + game.getWhiteUsername() + ", Black Player: " + game.getBlackUsername());
+        indexPlusOne++;
+      }
+      this.gameList = games;
+      return "";
+    }catch (Exception e) {
+      return "Could not list games: " + e.getMessage();
+    }
+  }
+
 
   public Boolean getLoggedIn() {
     return loggedIn;
@@ -110,9 +142,12 @@ public class Player {
           default -> invalid();
         };
       }
+      // if we are logged in
       else {
         return switch (cmd) {
           case "logout" -> logout();
+          case "creategame" -> createGame();
+          case "listgames" -> listGames();
           default -> invalid();
         };
       }
@@ -122,7 +157,7 @@ public class Player {
   }
 
   private String invalid() {
-    return "Invalid option" + help();
+    return "Invalid option\n" + help();
   }
 
 }

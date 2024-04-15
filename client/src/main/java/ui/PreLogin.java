@@ -7,5 +7,19 @@ public class PreLogin {
    * login
    * register a new user
    */
+  public String helpMenu() {
+    String help = """
+      Help Menu
+      Login : Login as an existing user
+      Register : Register a new user
+      Quit : Exit Chess
+     """;
+    return help;
+  }
+
+  public String register(String username, String password, String email) {
+
+  }
+
 
 }

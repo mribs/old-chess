@@ -1,6 +1,12 @@
 package server;
 
+import com.google.gson.Gson;
+import exceptions.DataAccessException;
+import models.Game;
 import models.User;
+
+import java.io.*;
+import java.net.*;
 
 public class ServerFacade {
   private final String serverUrl;
@@ -10,30 +16,30 @@ public class ServerFacade {
   }
 
 
-  public User registerUser(User user) throws data {
+  public User registerUser(User user) throws DataAccessException {
     var path = "/pet";
-    return this.makeRequest("POST", path, pet, Pet.class);
+    return this.makeRequest("POST", path, user, User.class);
   }
 
-  public void deletePet(int id) throws ResponseException {
+  public void deletePet(int id) throws DataAccessException {
     var path = String.format("/pet/%s", id);
     this.makeRequest("DELETE", path, null, null);
   }
 
-  public void deleteAllPets() throws ResponseException {
+  public void deleteAllPets() throws DataAccessException {
     var path = "/pet";
     this.makeRequest("DELETE", path, null, null);
   }
 
-  public Pet[] listPets() throws ResponseException {
+  public Game[] listPets() throws DataAccessException {
     var path = "/pet";
-    record listPetResponse(Pet[] pet) {
+    record listPetResponse(Game[] games) {
     }
     var response = this.makeRequest("GET", path, null, listPetResponse.class);
-    return response.pet();
+    return response.games();
   }
 
-  private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+  private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws DataAccessException {
     try {
       URL url = (new URI(serverUrl + path)).toURL();
       HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -45,7 +51,7 @@ public class ServerFacade {
       throwIfNotSuccessful(http);
       return readBody(http, responseClass);
     } catch (Exception ex) {
-      throw new ResponseException(500, ex.getMessage());
+      throw new DataAccessException(ex.getMessage());
     }
   }
 
@@ -60,10 +66,10 @@ public class ServerFacade {
     }
   }
 
-  private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
+  private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, DataAccessException {
     var status = http.getResponseCode();
     if (!isSuccessful(status)) {
-      throw new ResponseException(status, "failure: " + status);
+      throw new DataAccessException("failure: " + status);
     }
   }
 

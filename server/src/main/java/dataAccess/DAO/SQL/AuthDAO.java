@@ -1,9 +1,9 @@
 package dataAccess.DAO.SQL;
 
-import com.google.gson.Gson;
 import dataAccess.*;
-import dataAccess.models.AuthToken;
-import dataAccess.models.User;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
+import models.AuthToken;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

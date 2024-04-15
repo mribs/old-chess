@@ -2,6 +2,9 @@ package dataAccess.handlers;
 
 import com.google.gson.Gson;
 import dataAccess.*;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
+import exceptions.UnauthorizedException;
 import service.services.CreateGameService;
 import service.requests.CreateGameRequest;
 import service.results.ErrorResult;

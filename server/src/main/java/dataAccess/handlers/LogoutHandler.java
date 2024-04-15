@@ -2,8 +2,8 @@ package dataAccess.handlers;
 
 import com.google.gson.Gson;
 import dataAccess.Authorizer;
-import dataAccess.DataAccessException;
-import dataAccess.UnauthorizedException;
+import exceptions.DataAccessException;
+import exceptions.UnauthorizedException;
 import service.services.LogoutService;
 import service.results.ClearResult;
 import service.results.ErrorResult;

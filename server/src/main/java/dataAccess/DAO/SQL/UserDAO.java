@@ -1,8 +1,10 @@
 package dataAccess.DAO.SQL;
 
-import com.google.gson.Gson;
 import dataAccess.*;
-import dataAccess.models.User;
+import exceptions.AlreadyTakenException;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
+import models.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,10 +1,10 @@
 package service.services;
 
-import dataAccess.AlreadyTakenException;
-import dataAccess.BadRequestException;
+import exceptions.AlreadyTakenException;
+import exceptions.BadRequestException;
 import dataAccess.DAO.SQL.GameDAO;
-import dataAccess.DataAccessException;
-import dataAccess.models.Game;
+import exceptions.DataAccessException;
+import models.Game;
 import service.requests.JoinGameRequest;
 import service.results.JoinGameResult;
 

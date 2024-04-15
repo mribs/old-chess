@@ -2,10 +2,10 @@ package dataAccess.DAO.SQL;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import dataAccess.BadRequestException;
-import dataAccess.DataAccessException;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
 import dataAccess.DatabaseManager;
-import dataAccess.models.Game;
+import models.Game;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

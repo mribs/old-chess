@@ -1,9 +1,13 @@
 package serviceTests;
 
 import dataAccess.*;
-import dataAccess.models.AuthToken;
-import dataAccess.models.Game;
-import dataAccess.models.User;
+import exceptions.AlreadyTakenException;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
+import exceptions.UnauthorizedException;
+import models.AuthToken;
+import models.Game;
+import models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

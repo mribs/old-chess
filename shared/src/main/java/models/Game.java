@@ -1,4 +1,4 @@
-package dataAccess.models;
+package models;
 
 import chess.*;
 

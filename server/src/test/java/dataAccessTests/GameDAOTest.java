@@ -1,9 +1,9 @@
 package dataAccessTests;
 
-import dataAccess.BadRequestException;
+import exceptions.BadRequestException;
 import dataAccess.DAO.SQL.GameDAO;
-import dataAccess.DataAccessException;
-import dataAccess.models.Game;
+import exceptions.DataAccessException;
+import models.Game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

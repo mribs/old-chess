@@ -3,8 +3,8 @@ package service.services;
 //import dataAccess.DAO.memory.AuthDAO;
 import dataAccess.DAO.SQL.AuthDAO;
 
-import dataAccess.DataAccessException;
-import dataAccess.UnauthorizedException;
+import exceptions.DataAccessException;
+import exceptions.UnauthorizedException;
 
 public class LogoutService {
   public void logOut(String authToken) throws DataAccessException, UnauthorizedException {

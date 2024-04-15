@@ -1,10 +1,10 @@
 package dataAccess.handlers;
 
 import com.google.gson.Gson;
-import dataAccess.AlreadyTakenException;
-import dataAccess.BadRequestException;
-import dataAccess.DataAccessException;
-import dataAccess.UnauthorizedException;
+import exceptions.AlreadyTakenException;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
+import exceptions.UnauthorizedException;
 import service.services.RegisterService;
 import service.requests.RegisterRequest;
 import service.results.ErrorResult;

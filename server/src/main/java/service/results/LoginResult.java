@@ -1,6 +1,6 @@
 package service.results;
 
-import dataAccess.models.AuthToken;
+import models.AuthToken;
 
 public class LoginResult {
   String username;

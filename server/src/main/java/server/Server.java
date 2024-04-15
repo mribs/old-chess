@@ -1,6 +1,6 @@
 package server;
 
-import dataAccess.DataAccessException;
+import exceptions.DataAccessException;
 import dataAccess.DatabaseManager;
 import dataAccess.handlers.*;
 import spark.*;

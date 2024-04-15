@@ -1,8 +1,8 @@
 package dataAccess.DAO.memory;
 
-import dataAccess.DataAccessException;
+import exceptions.DataAccessException;
 import dataAccess.Database;
-import dataAccess.models.Game;
+import models.Game;
 
 import java.util.*;
 

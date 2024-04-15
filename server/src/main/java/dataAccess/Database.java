@@ -1,8 +1,8 @@
 package dataAccess;
 
-import dataAccess.models.AuthToken;
-import dataAccess.models.Game;
-import dataAccess.models.User;
+import models.AuthToken;
+import models.Game;
+import models.User;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

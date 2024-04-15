@@ -2,6 +2,10 @@ package dataAccess.handlers;
 
 import com.google.gson.Gson;
 import dataAccess.*;
+import exceptions.AlreadyTakenException;
+import exceptions.BadRequestException;
+import exceptions.DataAccessException;
+import exceptions.UnauthorizedException;
 import service.services.JoinGameService;
 import service.requests.JoinGameRequest;
 import service.results.ErrorResult;

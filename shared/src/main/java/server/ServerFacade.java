@@ -2,23 +2,39 @@ package server;
 
 import com.google.gson.Gson;
 import exceptions.DataAccessException;
+import models.AuthToken;
 import models.Game;
 import models.User;
 
 import java.io.*;
 import java.net.*;
+import java.net.http.HttpClient;
 
 public class ServerFacade {
   private final String serverUrl;
+  private final HttpClient httpClient;
+  private Gson gson;
 
   public ServerFacade(String url) {
-    serverUrl = url;
+    this.serverUrl = url;
+    this.httpClient = HttpClient.newHttpClient();
+    this.gson = new Gson();
   }
 
 
-  public User registerUser(User user) throws DataAccessException {
-    var path = "/pet";
-    return this.makeRequest("POST", path, user, User.class);
+  public AuthToken registerUser(User user) throws DataAccessException {
+    var path = "/user";
+    return this.makeRequest("POST", path, user, AuthToken.class);
+  }
+
+  public AuthToken login(User user) throws DataAccessException {
+    var path = "/session";
+    return this.makeRequest("POST", path,user, AuthToken.class);
+  }
+
+  public void logout(String authToken) throws DataAccessException {
+    var path = "/session";
+    this.makeRequest("DELETE", path, null, authToken, null);
   }
 
   public void deletePet(int id) throws DataAccessException {
@@ -44,6 +60,22 @@ public class ServerFacade {
       URL url = (new URI(serverUrl + path)).toURL();
       HttpURLConnection http = (HttpURLConnection) url.openConnection();
       http.setRequestMethod(method);
+      http.setDoOutput(true);
+
+      writeBody(request, http);
+      http.connect();
+      throwIfNotSuccessful(http);
+      return readBody(http, responseClass);
+    } catch (Exception ex) {
+      throw new DataAccessException(ex.getMessage());
+    }
+  }
+  private <T> T makeRequest(String method, String path, Object request, String authToken, Class<T> responseClass) throws DataAccessException {
+    try {
+      URL url = (new URI(serverUrl + path)).toURL();
+      HttpURLConnection http = (HttpURLConnection) url.openConnection();
+      http.setRequestMethod(method);
+      http.setRequestProperty("authorization", authToken);
       http.setDoOutput(true);
 
       writeBody(request, http);
@@ -90,4 +122,7 @@ public class ServerFacade {
   private boolean isSuccessful(int status) {
     return status / 100 == 2;
   }
+
+
+
 }

@@ -6,7 +6,7 @@ import ui.Player;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
-  private Player player = new Player();
+  private Player player = new Player("no need");
 
   @Test
   void helpTest() {

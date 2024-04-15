@@ -1,6 +1,17 @@
 package ui;
 
+import exceptions.DataAccessException;
+import models.AuthToken;
+import models.User;
+import server.ServerFacade;
+
 public class PreLogin {
+  private ServerFacade serverFacade;
+
+  public PreLogin(ServerFacade serverFacade) {
+    this.serverFacade=serverFacade;
+  }
+
   /* things I can do:
    * list options
    * quit program
@@ -17,8 +28,24 @@ public class PreLogin {
     return help;
   }
 
-  public String register(String username, String password, String email) {
+  public AuthToken register(String username, String password, String email) {
+    try {
+      User user=new User(username, password, email);
+      AuthToken authToken=serverFacade.registerUser(user);
+      return authToken;
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
+  public AuthToken login(String username, String password) {
+    try {
+      User user = new User(username, password);
+      AuthToken authToken = serverFacade.login(user);
+      return authToken;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
 

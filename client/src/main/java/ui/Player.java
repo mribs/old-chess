@@ -1,16 +1,27 @@
 package ui;
 
+import models.AuthToken;
+import models.User;
+import server.ServerFacade;
+
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Player {
   private Boolean loggedIn;
   private PreLogin preLogin;
   private PostLogin postLogin;
+  private Scanner scanner;
+  private ServerFacade serverFacade;
+  private AuthToken authToken;
 
-  public Player() {
+  public Player(String serverUrl) {
+    this.serverFacade = new ServerFacade(serverUrl);
     this.loggedIn = false;
-    this.preLogin = new PreLogin();
-    this.postLogin = new PostLogin();
+    this.preLogin = new PreLogin(serverFacade);
+    this.postLogin = new PostLogin(serverFacade);
+    this.scanner = new Scanner(System.in);
+    this.authToken = null;
   }
 
   public String help() {
@@ -19,6 +30,64 @@ public class Player {
     }
     return preLogin.helpMenu();
   }
+
+  public String register() {
+    String returnString = null;
+    try {
+      System.out.println("Enter username:");
+      String username = scanner.nextLine();
+      System.out.println("Enter password:");
+      String password = scanner.nextLine();
+      System.out.println("Enter email:");
+      String email = scanner.nextLine();
+
+      authToken = preLogin.register(username, password, email);
+      if (authToken.getAuthToken() != null) {
+        returnString = ("Welcome to Chess, " + authToken.getUsername() + "!");
+        loggedIn = true;
+      }
+    } catch (Exception e) {
+      returnString = ("Couldn't register user: " + e.getMessage());
+      loggedIn = false;
+    }
+
+    return returnString;
+  }
+
+  public String login() {
+    String returnString = null;
+    try {
+      System.out.println("Enter username:");
+      String username = scanner.nextLine();
+      System.out.println("Enter password:");
+      String password = scanner.nextLine();
+
+      authToken = preLogin.login(username, password);
+      if (authToken.getAuthToken() != null) {
+        returnString = ("Welcome to Chess, " + authToken.getUsername() + "!");
+        loggedIn = true;
+      }
+    } catch (Exception e) {
+      returnString = ("Login failed: " + e.getMessage());
+      loggedIn = false;
+    }
+
+    return returnString;
+
+  }
+
+  private String logout() {
+    String returnString = null;
+    try {
+      postLogin.logout(authToken);
+      returnString = "Successfully logged out!";
+      loggedIn = false;
+    } catch (Exception e) {
+      returnString = "Failed to log out: " + e.getMessage();
+    }
+    return returnString;
+  }
+
 
   public Boolean getLoggedIn() {
     return loggedIn;
@@ -36,16 +105,24 @@ public class Player {
       if (!loggedIn) {
         return switch (cmd) {
           case "quit" -> "quit";
-          default -> help();
+          case "register" -> register();
+          case "login" -> login();
+          default -> invalid();
         };
       }
       else {
         return switch (cmd) {
-          default -> help();
+          case "logout" -> logout();
+          default -> invalid();
         };
       }
     } catch (Throwable e) {
       return e.getMessage();
     }
   }
+
+  private String invalid() {
+    return "Invalid option" + help();
+  }
+
 }

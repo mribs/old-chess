@@ -8,7 +8,7 @@ public class MainUI {
 
   public MainUI(String serverUrl) {
     //TODO: implement player using serverURl?? PETSHOP example
-    player = new Player();
+    player = new Player(serverUrl);
   }
 
   public void run() {

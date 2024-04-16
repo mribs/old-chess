@@ -114,7 +114,27 @@ public class ServerFacadeTests {
         });
     }
 
-
+    @Test
+    public void listPassTest() {
+        AuthToken token=null;
+        try {
+            token=facade.registerUser(new User("testname", "testPass", "testemail"));
+            facade.createGame(token.getAuthToken(), "TestGame");
+            assertNotNull(facade.listGames(token.getAuthToken()));
+        } catch (DataAccessException e) {
+            System.out.println("register failed: " + e.getMessage());
+        }
+        AuthToken finalToken=token;
+        assertDoesNotThrow(() ->
+                facade.listGames(finalToken.getAuthToken())
+        );
+    }
+    @Test
+    public void listFailTest() {
+        assertThrows(DataAccessException.class, () -> {
+            facade.listGames("anytoken");
+        });
+    }
 
 
 }

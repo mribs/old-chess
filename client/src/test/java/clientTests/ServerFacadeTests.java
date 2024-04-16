@@ -93,6 +93,27 @@ public class ServerFacadeTests {
         });
     }
 
+    @Test
+    public void createPassTest() {
+        AuthToken token=null;
+        try {
+            token=facade.registerUser(new User("testname", "testPass", "testemail"));
+        } catch (DataAccessException e) {
+            System.out.println("register failed: " + e.getMessage());
+        }
+        AuthToken finalToken=token;
+        assertDoesNotThrow(() ->
+                facade.createGame(finalToken.getAuthToken(), "TestGame")
+        );
+    }
+
+    @Test
+    public void createFailTest() {
+        assertThrows(DataAccessException.class, () -> {
+            facade.createGame("anytoken", "anyName");
+        });
+    }
+
 
 
 

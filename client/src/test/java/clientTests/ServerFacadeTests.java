@@ -5,7 +5,6 @@ import dataAccess.DAO.SQL.GameDAO;
 import dataAccess.DAO.SQL.UserDAO;
 import exceptions.DataAccessException;
 import models.AuthToken;
-import models.Game;
 import models.User;
 import org.junit.jupiter.api.*;
 import server.Server;

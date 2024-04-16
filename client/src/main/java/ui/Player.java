@@ -1,14 +1,11 @@
 package ui;
 
-import chess.ChessBoard;
 import chess.ChessGame;
 import models.AuthToken;
 import models.Game;
-import models.User;
 import server.ServerFacade;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Player {

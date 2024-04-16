@@ -1,7 +1,6 @@
 package ui;
 
 import java.util.Scanner;
-import ui.EscapeSequences;
 
 public class MainUI {
   private final Player player;

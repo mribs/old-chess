@@ -4,7 +4,6 @@ import chess.ChessGame;
 import exceptions.DataAccessException;
 import models.AuthToken;
 import models.Game;
-import models.User;
 import server.ServerFacade;
 
 public class PostLogin {

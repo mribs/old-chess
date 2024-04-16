@@ -56,4 +56,21 @@ public class ServerFacadeTests {
         });
     }
 
+    @Test
+    public void loginPassTest() {
+        assertDoesNotThrow(() ->
+                facade.registerUser(new User("testname", "testPass", "testemail"))
+        );
+        assertDoesNotThrow(() ->
+                facade.login(new User("testname", "testPass"))
+        );
+    }
+    @Test
+    public void loginFailTest() {
+        assertThrows(DataAccessException.class, () -> {
+            facade.login(new User("name", "pass"));
+        });
+    }
+
+
 }

@@ -4,6 +4,7 @@ import dataAccess.DAO.SQL.AuthDAO;
 import dataAccess.DAO.SQL.GameDAO;
 import dataAccess.DAO.SQL.UserDAO;
 import exceptions.DataAccessException;
+import models.AuthToken;
 import models.User;
 import org.junit.jupiter.api.*;
 import server.Server;
@@ -71,6 +72,28 @@ public class ServerFacadeTests {
             facade.login(new User("name", "pass"));
         });
     }
+
+    @Test
+    public void logoutPassTEst() {
+        AuthToken token=null;
+        try {
+            token=facade.registerUser(new User("testname", "testPass", "testemail"));
+        } catch (DataAccessException e) {
+            System.out.println("register failed: " + e.getMessage());
+        }
+        AuthToken finalToken=token;
+        assertDoesNotThrow(() ->
+                facade.logout(finalToken.getAuthToken())
+        );
+    }
+    @Test
+    public void logoutFailTest() {
+        assertThrows(DataAccessException.class, () -> {
+            facade.logout("anytoken");
+        });
+    }
+
+
 
 
 }

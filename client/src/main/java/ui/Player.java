@@ -4,6 +4,7 @@ import chess.ChessGame;
 import models.AuthToken;
 import models.Game;
 import server.ServerFacade;
+import ui.Game.GameBoard;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -17,6 +18,7 @@ public class Player {
   private AuthToken authToken;
   private Game[] gameList;
   private GameBoard gameboard;
+  private String serverUrl;
 
   public Player(String serverUrl) {
     this.serverFacade = new ServerFacade(serverUrl);
@@ -25,7 +27,8 @@ public class Player {
     this.postLogin = new PostLogin(serverFacade);
     this.scanner = new Scanner(System.in);
     this.authToken = null;
-    this.gameboard = new GameBoard();
+    this.gameboard = new GameBoard(serverUrl);
+    this.serverUrl = serverUrl;
 
   }
 

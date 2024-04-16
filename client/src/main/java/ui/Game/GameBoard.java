@@ -1,17 +1,23 @@
-package ui;
+package ui.Game;
 
 import chess.*;
+import exceptions.DataAccessException;
+import models.User;
+import ui.EscapeSequences;
+import ui.Game.GamePlayUI;
 
 public class GameBoard {
   private ChessGame game;
   private ChessBoard board;
+  private String serverUrl;
 
-  public GameBoard() {
+  public GameBoard(String serverUrl) {
     this.game = new ChessGame();
     this.board = game.getBoard();
+    this.serverUrl = serverUrl;
   }
 
-  public String startGame(ChessGame game, String playerColor) {
+  public String startGame(ChessGame game, String playerColor) throws DataAccessException {
     this.game = game;
     this.board = game.getBoard();
     board.resetBoard();
@@ -21,7 +27,9 @@ public class GameBoard {
     System.out.println();
     fancyPrint("black");
 
-    return ("gameplay is not enabled now");
+    GamePlayUI gamePlayUI = new GamePlayUI(this, serverUrl);
+    gamePlayUI.run();
+    return null;
   }
 
   public void fancyPrint(String color) {

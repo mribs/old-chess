@@ -5,6 +5,7 @@ import dataAccess.DAO.SQL.GameDAO;
 import dataAccess.DAO.SQL.UserDAO;
 import exceptions.DataAccessException;
 import models.AuthToken;
+import models.Game;
 import models.User;
 import org.junit.jupiter.api.*;
 import server.Server;
@@ -135,6 +136,48 @@ public class ServerFacadeTests {
             facade.listGames("anytoken");
         });
     }
+
+    @Test
+    public void joinPassTest() {
+        AuthToken token=null;
+        int gameID=0;
+        try {
+            token=facade.registerUser(new User("testname", "testPass", "testemail"));
+            gameID=facade.createGame(token.getAuthToken(), "TestGame");
+        } catch (DataAccessException e) {
+            System.out.println("register failed: " + e.getMessage());
+        }
+        AuthToken finalToken=token;
+        int finalGameID=gameID;
+        assertDoesNotThrow(() ->
+                facade.joinGame(finalGameID, "white", "testname" ,finalToken.getAuthToken())
+        );
+    }
+    @Test
+    public void observePassTest() {
+        AuthToken token=null;
+        int gameID=0;
+        try {
+            token=facade.registerUser(new User("testname", "testPass", "testemail"));
+            gameID=facade.createGame(token.getAuthToken(), "TestGame");
+        } catch (DataAccessException e) {
+            System.out.println("register failed: " + e.getMessage());
+        }
+        AuthToken finalToken=token;
+        int finalGameID=gameID;
+        assertDoesNotThrow(() ->
+                facade.joinGame(finalGameID, null, "testname" ,finalToken.getAuthToken())
+        );
+    }
+    @Test
+    public void joinFailTest() {
+        assertThrows(DataAccessException.class, () -> {
+            facade.joinGame(1, "white", "username", "badtoken");
+        });
+    }
+
+
+
 
 
 }

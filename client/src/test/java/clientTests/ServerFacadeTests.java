@@ -1,8 +1,15 @@
 package clientTests;
 
+import dataAccess.DAO.SQL.AuthDAO;
+import dataAccess.DAO.SQL.GameDAO;
+import dataAccess.DAO.SQL.UserDAO;
+import exceptions.DataAccessException;
+import models.User;
 import org.junit.jupiter.api.*;
 import server.Server;
 import server.ServerFacade;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ServerFacadeTests {
@@ -17,6 +24,13 @@ public class ServerFacadeTests {
         System.out.println("Started test HTTP server on " + port);
         facade = new ServerFacade("http://localhost:" + port);
     }
+    @AfterEach
+    public void clear() {
+        new AuthDAO().clearTokens();
+        new UserDAO().clearUsers();
+        new GameDAO().clearGames();
+    }
+
 
     @AfterAll
     static void stopServer() {
@@ -26,12 +40,20 @@ public class ServerFacadeTests {
 
     @Test
     public void sampleTest() {
-        Assertions.assertTrue(true);
+        assertTrue(true);
     }
 
     @Test
     public void regPassTest() {
-
+        assertDoesNotThrow(() ->
+            facade.registerUser(new User("testname", "testPass", "testemail"))
+        );
+    }
+    @Test
+    public void regFailTest() {
+        assertThrows(DataAccessException.class, () -> {
+            facade.registerUser(new User("name", "pass"));
+        });
     }
 
 }

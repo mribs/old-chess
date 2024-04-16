@@ -23,9 +23,7 @@ public class GameBoard {
     board.resetBoard();
 
     //TODO UPDATE FOR GAMEPLAY
-    fancyPrint("white");
-    System.out.println();
-    fancyPrint("black");
+    fancyPrint(playerColor);
 
     GamePlayUI gamePlayUI = new GamePlayUI(this, serverUrl);
     gamePlayUI.run();
@@ -42,7 +40,7 @@ public class GameBoard {
         int col = reverse ? 8 - j + 1 : j;
         System.out.print(EscapeSequences.moveCursorToLocation(col * 5, (reverse ? 8 - row + 2 : row + 1)));
 
-        boolean isWhiteSquare = (row + col) % 2 == 0;
+        boolean isWhiteSquare = (row + col) % 2 == 1;
         String backgroundColor = isWhiteSquare ? EscapeSequences.SET_BG_COLOR_WHITE : EscapeSequences.SET_BG_COLOR_BLACK;
         String textColor = EscapeSequences.SET_TEXT_COLOR_MAGENTA;
 

@@ -168,6 +168,7 @@ public class Player {
           case "quit" -> "quit";
           case "register" -> register();
           case "login" -> login();
+          case "help" -> help();
           default -> invalid();
         };
       }
@@ -179,6 +180,7 @@ public class Player {
           case "listgames" -> listGames();
           case "joingame" -> joinGame();
           case "observe" -> observeGame();
+          case "help" -> help();
           default -> invalid();
         };
       }

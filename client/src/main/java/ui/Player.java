@@ -1,6 +1,7 @@
 package ui;
 
 import chess.ChessGame;
+import exceptions.DataAccessException;
 import models.AuthToken;
 import models.Game;
 import server.ServerFacade;
@@ -124,7 +125,7 @@ public class Player {
     }
   }
 
-  private String joinGame() {
+  private String joinGame() throws DataAccessException {
     System.out.println("Enter gameID:");
     String stringGameID = scanner.nextLine();
     System.out.println("Which team? (white/black):");
@@ -137,7 +138,7 @@ public class Player {
     if (joined != null) return gameboard.startGame(joined, color);
     else return "failed to join game";
   }
-  private String observeGame() {
+  private String observeGame() throws DataAccessException {
     System.out.println("Enter gameID:");
     String stringGameID = scanner.nextLine();
     int gameID = Integer.parseInt(stringGameID);

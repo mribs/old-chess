@@ -5,6 +5,7 @@ import websocket.NotificationHandler;
 import websocket.WebsocketFacade;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class GameClient {
@@ -20,6 +21,33 @@ public class GameClient {
   }
 
   public String help() {
-    return null;
+    String help ="""
+            Help Menu
+            Redraw : Redraws current game board
+            Leave : Exit game
+            Highlight : Highlight legal moves
+            Move : Make a move (if it's your turn)
+            Resign : AKA rage quit
+            """;
+    return help;
+  }
+
+  public String evalLine(String line) {
+    try {
+      var tokens = line.toLowerCase().split(" ");
+      var cmd = (tokens.length > 0) ? tokens[0] : "help";
+      var params = Arrays.copyOfRange(tokens, 1, tokens.length);
+        return switch (cmd) {
+          case "quit" -> "quit";
+          case "help" -> help();
+          default -> invalid();
+        };
+    } catch (Throwable e) {
+      return e.getMessage();
+    }
+  }
+
+  private String invalid() {
+    return "Invalid option\n" + help();
   }
 }

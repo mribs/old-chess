@@ -20,5 +20,6 @@ public class GameClient {
   }
 
   public String help() {
+    return null;
   }
 }

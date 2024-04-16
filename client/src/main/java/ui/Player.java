@@ -1,5 +1,7 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
 import models.AuthToken;
 import models.Game;
 import models.User;
@@ -17,6 +19,7 @@ public class Player {
   private ServerFacade serverFacade;
   private AuthToken authToken;
   private Game[] gameList;
+  private GameBoard gameboard;
 
   public Player(String serverUrl) {
     this.serverFacade = new ServerFacade(serverUrl);
@@ -25,6 +28,7 @@ public class Player {
     this.postLogin = new PostLogin(serverFacade);
     this.scanner = new Scanner(System.in);
     this.authToken = null;
+    this.gameboard = new GameBoard();
 
   }
 
@@ -120,6 +124,31 @@ public class Player {
     }
   }
 
+  private String joinGame() {
+    System.out.println("Enter gameID:");
+    String stringGameID = scanner.nextLine();
+    System.out.println("Which team? (white/black):");
+    String color = scanner.nextLine();
+    int gameID = Integer.parseInt(stringGameID);
+    if (gameList != null && gameID <= gameList.length) {
+      gameID = gameList[gameID-1].getGameID();
+    }
+    ChessGame joined = postLogin.joinGame(gameID, color, authToken);
+    if (joined != null) return gameboard.startGame(joined, color);
+    else return "failed to join game";
+  }
+  private String observeGame() {
+    System.out.println("Enter gameID:");
+    String stringGameID = scanner.nextLine();
+    int gameID = Integer.parseInt(stringGameID);
+    if (gameList != null && gameID <= gameList.length) {
+      gameID = gameList[gameID-1].getGameID();
+    }
+    ChessGame joined = postLogin.joinGame(gameID, null, authToken);
+    if (joined != null) return gameboard.startGame(joined, null);
+    else return "failed to observe game";
+  }
+
 
   public Boolean getLoggedIn() {
     return loggedIn;
@@ -148,6 +177,8 @@ public class Player {
           case "logout" -> logout();
           case "creategame" -> createGame();
           case "listgames" -> listGames();
+          case "joingame" -> joinGame();
+          case "observe" -> observeGame();
           default -> invalid();
         };
       }

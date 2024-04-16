@@ -1,9 +1,11 @@
 package server;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import exceptions.DataAccessException;
 import models.AuthToken;
 import models.Game;
+import models.Join;
 import models.User;
 
 import java.io.*;
@@ -46,22 +48,20 @@ public class ServerFacade {
     return gameID;
   }
 
-  public void deletePet(int id) throws DataAccessException {
-    var path = String.format("/pet/%s", id);
-    this.makeRequest("DELETE", path, null, null);
-  }
-
-  public void deleteAllPets() throws DataAccessException {
-    var path = "/pet";
-    this.makeRequest("DELETE", path, null, null);
-  }
-
   public Game[] listGames(String authToken) throws DataAccessException {
     var path = "/game";
     record listGamesResponse(Game[] games) {
     }
     var response = this.makeRequest("GET", path, null, authToken, listGamesResponse.class);
     return response.games();
+  }
+
+  public ChessGame joinGame(int gameID, String color,String username, String authToken) throws DataAccessException {
+    var path = "/game";
+    Join join = new Join(gameID, color);
+    record joinGameResponse() {}
+    var response = this.makeRequest("PUT", path, join, authToken, ChessGame.class);
+    return response;
   }
 
   private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws DataAccessException {

@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import exceptions.DataAccessException;
 import models.AuthToken;
 import models.Game;
@@ -52,6 +53,16 @@ public class PostLogin {
       System.out.println( "Could not list games: " + e.getMessage());
     }
     return games;
+  }
+
+  public ChessGame joinGame(int gameID, String color, AuthToken authToken) {
+    try {
+      ChessGame joined = serverFacade.joinGame(gameID, color, authToken.getUsername(), authToken.getAuthToken());
+      return joined;
+    } catch (Exception e) {
+      System.out.println("Couldn't join game: " + e.getMessage());
+    }
+    return null;
   }
 
 }

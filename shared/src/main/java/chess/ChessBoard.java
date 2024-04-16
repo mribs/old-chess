@@ -126,5 +126,4 @@ public class ChessBoard {
     public int hashCode() {
         return Arrays.hashCode(board);
     }
-
 }

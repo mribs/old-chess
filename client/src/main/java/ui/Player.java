@@ -28,8 +28,9 @@ public class Player {
     this.postLogin = new PostLogin(serverFacade);
     this.scanner = new Scanner(System.in);
     this.authToken = null;
-    this.gameboard = new GameBoard(serverUrl);
     this.serverUrl = serverUrl;
+    this.gameboard = new GameBoard(this);
+
 
   }
 
@@ -135,7 +136,10 @@ public class Player {
       gameID = gameList[gameID-1].getGameID();
     }
     ChessGame joined = postLogin.joinGame(gameID, color, authToken);
-    if (joined != null) return gameboard.startGame(joined, color);
+    if (joined != null) {
+      gameboard.startGame(joined, color);
+      return "Good game!";
+    }
     else return "failed to join game";
   }
   private String observeGame() throws DataAccessException {
@@ -146,7 +150,10 @@ public class Player {
       gameID = gameList[gameID-1].getGameID();
     }
     ChessGame joined = postLogin.joinGame(gameID, null, authToken);
-    if (joined != null) return gameboard.startGame(joined, null);
+    if (joined != null) {
+      gameboard.startGame(joined, null);
+      return "Good game!";
+    }
     else return "failed to observe game";
   }
 
@@ -192,6 +199,10 @@ public class Player {
 
   private String invalid() {
     return "Invalid option\n" + help();
+  }
+
+  public String getServerUrl() {
+    return serverUrl;
   }
 
 }

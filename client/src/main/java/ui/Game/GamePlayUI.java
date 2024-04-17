@@ -2,6 +2,7 @@ package ui.Game;
 
 import exceptions.DataAccessException;
 import ui.EscapeSequences;
+import ui.Player;
 
 import java.net.URL;
 import java.util.Scanner;
@@ -10,9 +11,9 @@ public class GamePlayUI {
 
   private GameClient player;
 
-  public GamePlayUI(GameBoard gameBoard, String serverURL) throws DataAccessException {
+  public GamePlayUI(GameBoard gameBoard, String serverURL, String playerColor, Player player) throws DataAccessException {
     String serverUrl = serverURL;
-    this.player = new GameClient(gameBoard, serverURL);
+    this.player = new GameClient(gameBoard, serverURL, playerColor, player);
   }
 
   public void run() {
@@ -30,7 +31,7 @@ public class GamePlayUI {
         result = player.evalLine(line);
         String printResult = result;
         if (result.equals("quit")) {
-          printResult = "Thanks for playing!";
+          printResult = "Exiting game mode";
         }
         System.out.println(EscapeSequences.SET_TEXT_COLOR_BLUE + printResult);
       } catch (Throwable e) {

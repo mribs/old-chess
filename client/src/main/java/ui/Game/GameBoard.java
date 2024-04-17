@@ -2,38 +2,63 @@ package ui.Game;
 
 import chess.*;
 import exceptions.DataAccessException;
-import models.User;
 import ui.EscapeSequences;
-import ui.Game.GamePlayUI;
+import ui.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameBoard {
-  private ChessGame game;
-  private ChessBoard board;
+  public ChessGame game;
+  public ChessBoard board;
   private String serverUrl;
+  private Player player;
 
-  public GameBoard(String serverUrl) {
+  public GameBoard(Player player) {
     this.game = new ChessGame();
     this.board = game.getBoard();
-    this.serverUrl = serverUrl;
+    this.player = player;
+    this.serverUrl = player.getServerUrl();
+
   }
 
-  public String startGame(ChessGame game, String playerColor) throws DataAccessException {
+  public void startGame(ChessGame game, String playerColor) throws DataAccessException {
     this.game = game;
     this.board = game.getBoard();
     board.resetBoard();
 
-    //TODO UPDATE FOR GAMEPLAY
-    fancyPrint(playerColor);
+    //print board
+    fancyPrint(playerColor, null, null);
 
-    GamePlayUI gamePlayUI = new GamePlayUI(this, serverUrl);
+    GamePlayUI gamePlayUI = new GamePlayUI(this, serverUrl, playerColor, player);
+
+    //send joined message
+    if (playerColor == null) {
+      //send observer joined message
+    }
+    else {
+      //send join message with color
+    }
     gamePlayUI.run();
-    return null;
   }
 
-  public void fancyPrint(String color) {
+  public void fancyPrint(String color, ArrayList<ChessPosition> highlightSquares, ChessPosition highlightPiece) {
     Boolean reverse = false;
     if (color != null) color = color.toLowerCase();
     if ("black".equals(color)) reverse = true;
+
+    // Print column labels
+    if (reverse) {
+      for (char c = '8'; c >= '1'; c--) {
+        System.out.print(c + "  " );
+      }
+    } else {
+      for (char c = '1'; c <= '8'; c++) {
+        System.out.print(c + "  ");
+      }
+    }
+    System.out.println();
+
     for (int i = 1; i <= 8; i++) {
       int row = reverse ? i : 8 - i + 1;
       for (int j = 1; j <= 8; j++) {
@@ -44,6 +69,13 @@ public class GameBoard {
         String backgroundColor = isWhiteSquare ? EscapeSequences.SET_BG_COLOR_WHITE : EscapeSequences.SET_BG_COLOR_BLACK;
         String textColor = EscapeSequences.SET_TEXT_COLOR_MAGENTA;
 
+        if (highlightSquares != null && highlightSquares.contains(new ChessPosition(row, col))) {
+          backgroundColor = EscapeSequences.SET_BG_COLOR_GREEN;
+        }
+        if (highlightPiece != null && highlightPiece.equals(new ChessPosition(row, col))) {
+          backgroundColor = EscapeSequences.SET_BG_COLOR_YELLOW;
+        }
+
         System.out.print(backgroundColor + textColor);
 
         ChessPiece piece = board.getPiece(new ChessPosition(row, col));
@@ -53,12 +85,12 @@ public class GameBoard {
           System.out.print(printWhitePiece(piece));
         else
           System.out.print(printBlackPiece(piece));
-
-        System.out.print(EscapeSequences.RESET_BG_COLOR + EscapeSequences.RESET_TEXT_COLOR);
+        backgroundColor = EscapeSequences.RESET_BG_COLOR;
+        textColor = EscapeSequences.SET_TEXT_COLOR_BLUE;
+        System.out.print(backgroundColor + textColor);
       }
-      System.out.println(); // Move to the next line for the next row
+      System.out.println(row); // Move to the next line for the next row
     }
-    System.out.print(EscapeSequences.RESET_TEXT_COLOR);
   }
 
   private String printWhitePiece(ChessPiece piece) {

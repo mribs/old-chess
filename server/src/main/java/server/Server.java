@@ -4,6 +4,7 @@ import exceptions.DataAccessException;
 import dataAccess.DatabaseManager;
 import dataAccess.handlers.*;
 import spark.*;
+import websocket.WebSocketHandler;
 
 public class Server {
 
@@ -12,6 +13,9 @@ public class Server {
         Spark.staticFiles.location("web");
 
         // Register your endpoints and handle exceptions here.
+        // don't forget websocket
+        WebSocketHandler webSocketHandler = new WebSocketHandler();
+        Spark.webSocket("/connect", webSocketHandler);
 //        /create Routes
         Handler clearHandler = new ClearHandler();
         Handler createHandler = new CreateGameHandler();

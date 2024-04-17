@@ -16,13 +16,13 @@ public class GamePlayUI {
   }
 
   public void run() {
-    System.out.println("You've entered a game!");
+    System.out.println("You've entered GamePlay Mode!");
     System.out.println(player.help());
 
     Scanner scanner = new Scanner(System.in);
     var result = "";
     while (!result.equals("quit")) {
-      //TODO: align this better
+      //FIXME: questionable rn
       System.out.println(EscapeSequences.SET_TEXT_BLINKING + "Enter Option >>");
       String line = scanner.nextLine();
 

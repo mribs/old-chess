@@ -10,13 +10,7 @@ public class ClientMain {
             serverUrl = args[0];
         }
 
-//        new MainUI(serverUrl).run();
+        new MainUI(serverUrl).run();
 
-        //TODO: temporary for skipping to gamePlay UI
-        try {
-            new GamePlayUI(new GameBoard(serverUrl), (serverUrl)).run();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

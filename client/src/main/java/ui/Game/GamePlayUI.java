@@ -14,6 +14,14 @@ public class GamePlayUI {
   public GamePlayUI(GameBoard gameBoard, String serverURL, String playerColor, Player player) throws DataAccessException {
     String serverUrl = serverURL;
     this.player = new GameClient(gameBoard, serverURL, playerColor, player);
+
+    String username = player.getAuthToken().getUsername();
+    if (playerColor == null) {
+      this.player.sendMessage(username + " has joined as an observer");
+    }
+    else {
+      this.player.sendMessage(username + " has joined as " + playerColor + " player");
+    }
   }
 
   public void run() {

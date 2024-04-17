@@ -1,14 +1,13 @@
 package ui.Game;
 
 import chess.ChessMove;
-import chess.ChessPiece;
 import chess.ChessPosition;
 import exceptions.DataAccessException;
 import ui.Player;
 import websocket.NotificationHandler;
 import websocket.WebsocketFacade;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,6 +38,14 @@ public class GameClient {
             Move : Make a move (if it's your turn)
             Resign : AKA rage quit
             """;
+    if (playerColor == null) {
+      help ="""
+            Help Menu
+            Redraw : Redraws current game board
+            Leave : Exit game
+            Highlight : Highlight legal moves
+            """;
+    }
     return help;
   }
 
@@ -72,6 +79,10 @@ public class GameClient {
     return "Valid moves highlighted";
   }
 
+  private String leave() {
+    return "quit";
+  }
+
   public String evalLine(String line) {
     try {
       var tokens = line.toLowerCase().split(" ");
@@ -82,6 +93,7 @@ public class GameClient {
           case "help" -> help();
           case "redraw" -> redraw();
           case "highlight" -> highlightMoves();
+          case "leave" -> leave();
           default -> invalid();
         };
     } catch (Throwable e) {

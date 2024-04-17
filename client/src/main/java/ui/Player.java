@@ -205,4 +205,7 @@ public class Player {
     return serverUrl;
   }
 
+  public AuthToken getAuthToken() {
+    return authToken;
+  }
 }

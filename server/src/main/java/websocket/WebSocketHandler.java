@@ -16,25 +16,23 @@ public class WebSocketHandler {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException {
-    UserGameCommand action = new Gson().fromJson(message, UserGameCommand.class);
-    switch (action.getCommandType()) {
-//TODO figure put this connection busines
-      case LEAVE -> exit("fixme");
-    }
+    System.out.println("Message: " + message);
+    connections.broadcast(null, message);
   }
 
   private void enter(String visitorName, Session session) throws IOException {
-    connections.add(visitorName, session);
-    var message = String.format("%s is in the shop", visitorName);
-    var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
-    connections.broadcast(visitorName, notification);
+//    connections.add(visitorName, session);
+//    var message = String.format("%s is in the shop", visitorName);
+//    var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+//    connections.broadcast(visitorName, notification);
   }
 
   private void exit(String visitorName) throws IOException {
-    connections.remove(visitorName);
-    var message = String.format("%s left the shop", visitorName);
-    var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
-    connections.broadcast(visitorName, notification);
+    System.out.println("made it this far");
+//    connections.remove(visitorName);
+//    var message = String.format("%s left the shop", visitorName);
+//    var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+//    connections.broadcast(visitorName, notification);
   }
 
 //  public void makeNoise(String petName, String sound) throws ResponseException {

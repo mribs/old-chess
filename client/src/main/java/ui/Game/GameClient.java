@@ -1,5 +1,6 @@
 package ui.Game;
 
+import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
 import exceptions.DataAccessException;
@@ -7,7 +8,6 @@ import ui.Player;
 import websocket.NotificationHandler;
 import websocket.WebsocketFacade;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,10 +24,12 @@ public class GameClient {
   public GameClient(GameBoard gameBoard, String serverURL, String playerColor, Player player) throws DataAccessException {
     this.gameBoard=gameBoard;
     this.scanner = new Scanner(System.in);
-    this.facade = new WebsocketFacade(serverURL, notificationHandler);
+    this.facade = new WebsocketFacade(serverURL);
     this.playerColor = playerColor;
     this.playerInfo = player;
   }
+
+
 
   public String help() {
     String help ="""
@@ -50,7 +52,7 @@ public class GameClient {
   }
 
   private String redraw() {
-    gameBoard.fancyPrint(playerColor, null, null);
+    new PrintBoard().fancyPrint(gameBoard.board, playerColor, null, null);
     return "board redrawn";
   }
   private String highlightMoves() {
@@ -75,8 +77,32 @@ public class GameClient {
       highlightSquares.add(move.getEndPosition());
     }
 
-    gameBoard.fancyPrint(playerColor, highlightSquares, new ChessPosition(row, col));
+    new PrintBoard().fancyPrint(gameBoard.board, playerColor, highlightSquares, new ChessPosition(row, col));
     return "Valid moves highlighted";
+  }
+  private String makeMove() {
+    System.out.println("Enter piece X position (1-8):");
+    String pieceX = scanner.nextLine();
+    System.out.println("Enter piece Y position (1-8):");
+    String pieceY = scanner.nextLine();
+
+    int col = Integer.parseInt(pieceX);
+    int row = Integer.parseInt(pieceY);
+    ChessPosition start = new ChessPosition(row, col);
+
+    System.out.println("Enter goal X position (1-8):");
+    String pieceXF = scanner.nextLine();
+    System.out.println("Enter goal Y position (1-8):");
+    String pieceYF = scanner.nextLine();
+
+    int colF = Integer.parseInt(pieceXF);
+    int rowF = Integer.parseInt(pieceYF);
+    ChessPosition end = new ChessPosition(rowF, colF);
+
+    String returnString = gameBoard.makeMove(start, end);
+    redraw();
+    return returnString;
+
   }
 
   private String leave() {
@@ -94,6 +120,7 @@ public class GameClient {
           case "redraw" -> redraw();
           case "highlight" -> highlightMoves();
           case "leave" -> leave();
+          case "move" -> makeMove();
           default -> invalid();
         };
     } catch (Throwable e) {

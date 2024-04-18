@@ -13,7 +13,7 @@ import java.net.*;
 import java.net.http.HttpClient;
 
 public class ServerFacade {
-  private final String serverUrl;
+  public final String serverUrl;
   private final HttpClient httpClient;
   private Gson gson;
 

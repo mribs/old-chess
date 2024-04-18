@@ -4,13 +4,21 @@ import chess.ChessGame;
 import exceptions.DataAccessException;
 import models.AuthToken;
 import models.Game;
+import models.Join;
 import server.ServerFacade;
+import websocket.WebsocketFacade;
 
 public class PostLogin {
   private ServerFacade serverFacade;
+  private WebsocketFacade websocketFacade;
 
   public PostLogin(ServerFacade serverFacade) {
     this.serverFacade=serverFacade;
+    try {
+      websocketFacade = new WebsocketFacade(serverFacade.serverUrl);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
   public String helpMenu() {
     String help ="""
@@ -55,13 +63,14 @@ public class PostLogin {
   }
 
   public ChessGame joinGame(int gameID, String color, AuthToken authToken) {
+    ChessGame gameJoined=null;
     try {
-      ChessGame joined = serverFacade.joinGame(gameID, color, authToken.getUsername(), authToken.getAuthToken());
-      return joined;
+      gameJoined=serverFacade.joinGame(gameID, color, authToken.getUsername(), authToken.getAuthToken());
+      websocketFacade.join(new webSocketMessages.userCommands.Join(authToken.getAuthToken(), gameID, color));
     } catch (Exception e) {
       System.out.println("Couldn't join game: " + e.getMessage());
     }
-    return null;
+    return gameJoined;
   }
 
 }
